@@ -2,7 +2,7 @@
 
 precision mediump float;
 
-in vec3 texture_coordinates;
+in vec2 texture_coordinates;
 in vec4 colorValue;
 
 uniform sampler2D basic_texture;
