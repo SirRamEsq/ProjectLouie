@@ -6,12 +6,12 @@
  <imagelayer name="BG1">
   <image source="rapciu_horizon.png"/>
   <properties>
-   <property name="_DEPTH" type="int" value="200"/>
+   <property name="_DEPTH" type="int" value="95"/>
    <property name="_STRETCH_X" type="bool" value="true"/>
    <property name="_STRETCH_Y" type="bool" value="true"/>
   </properties>
  </imagelayer>
- <layer name="BG" width="100" height="50">
+ <layer name="BG" width="90" height="50">
   <properties>
    <property name="_DEPTH" type="int" value="30"/>
   </properties>
@@ -30098,7 +30098,7 @@
  </layer>
  <layer name="SECRET1" width="100" height="50">
   <properties>
-   <property name="_DEPTH" type="int" value="-1000"/>
+   <property name="_DEPTH" type="int" value="-90"/>
    <property name="isSecret" type="bool" value="true"/>
   </properties>
   <data>
