@@ -10,6 +10,9 @@ out vec4 frag_colour;
 
 void main() {
 	vec4 texel = texture (basic_texture, texture_coordinates);
+	//Quit if fragment is transparent
+	if(texel.w == 0.0)
+		discard;
 	texel = (texel * colorValue);
 
 	//texel.rgb = 1.0 - texel.rgb;		 //invert texture;
