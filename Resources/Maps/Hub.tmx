@@ -5,7 +5,7 @@
  <imagelayer name="BG1">
   <image source="rapciu_horizon.png"/>
   <properties>
-   <property name="_DEPTH" type="int" value="100"/>
+   <property name="_DEPTH" type="int" value="90"/>
    <property name="_STRETCH_X" type="bool" value="true"/>
    <property name="_STRETCH_Y" type="bool" value="true"/>
   </properties>
