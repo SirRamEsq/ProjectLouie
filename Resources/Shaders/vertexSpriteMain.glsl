@@ -3,9 +3,9 @@ precision highp float;
 
 layout (location = 0) in vec2 position; 	//vertex data
 layout (location = 1) in vec2 texture; 		//texture
-layout (location = 2) in vec4 color;		//color
-layout (location = 3) in vec4 scalingRotation;  //ScalingRotation
-layout (location = 4) in vec2 trans;		//Translation
+layout (location = 3) in vec4 color;		//color
+layout (location = 4) in vec4 scalingRotation;  //ScalingRotation
+layout (location = 5) in vec2 trans;		//Translation
 
 out vec2 texture_coordinates;
 out vec4 colorValue;
