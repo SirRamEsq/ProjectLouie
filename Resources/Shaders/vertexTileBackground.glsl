@@ -8,7 +8,7 @@ out vec2 texture_coordinates;
 out vec4 colorValue;
 
 layout(std140) uniform CameraData{
-    vec4 cameraTranslation;
+    vec4 viewMatrix;
     mat4 projMatrix;
 };
 
@@ -19,9 +19,11 @@ void main() {
 	texture_coordinates 	= texture;
 	colorValue 		= color;
 	
-	vec2 temp;
-	temp.x = position.x - cameraTranslation.x;
-	temp.y = position.y - cameraTranslation.y;
+	vec4 temp;
+	temp.x = position.x;
+	temp.y = position.y;
+	temp.z = depth;
+	temp.w = 1.0;
 
-	gl_Position = projMatrix * (vec4(temp, depth, 1.0));
+	gl_Position = projMatrix * viewMatrix * temp;
 }
