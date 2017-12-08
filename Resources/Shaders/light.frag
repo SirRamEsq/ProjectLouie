@@ -12,6 +12,7 @@ struct PointLight{
 };
 
 in vec2 textureCoordinates;
+in
 
 uniform sampler2D diffuseTex;
 uniform sampler2D depthTex;
@@ -55,8 +56,9 @@ void main(){
 	vec3 lightColor = AMBIENT_COLOR;
 
 	// Phase 2: Point lights
-	for (int i = 0; i < activeLights; i++)
+	for (int i = 0; i < activeLights; i++){
 		lightColor += CalcPointLight(pointLights[i],fragWorld.xyz, depthTexel);
+	}
 
 
 	lightColor = clamp(lightColor, vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0));

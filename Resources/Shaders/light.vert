@@ -8,8 +8,9 @@ struct PointLight{
 	//extra.y; flicker
 };
 
-in vec3 vert;
-in vec2 vertTexCoord;
+layout(location = 0) in vec2 vert;
+layout(location = 1) in vec2 vertTexCoord;
+
 #define MAX_LIGHTS 32
 
 uniform vec3 AMBIENT_COLOR;
@@ -33,5 +34,5 @@ out vec2 textureCoordinates;
 
 void main(){
 	textureCoordinates = vertTexCoord;
-	gl_Position = vec4(vert, 1.0);
+	gl_Position = vec4(vert, 1.0, 1.0);
 }
