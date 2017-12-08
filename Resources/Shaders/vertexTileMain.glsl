@@ -1,13 +1,15 @@
 #version 300 es
 
-layout (location = 0) in vec2 position; 	//vertex data
-layout (location = 1) in vec2 texture; 		//x,y, position (in tileCoords) of first frame of tile on texture, z,w are tex width and height
-//layout (location = 2) in vec2 animation;	//animation data (x = animation sped (float), y = max frames (int) )
+precision mediump float;
+
+layout (location = 0) in vec2 position;
+layout (location = 1) in vec2 texture;
 
 out vec2 texture_coordinates;
 out vec4 colorValue;
 
-layout(std140) uniform CameraData{
+layout(std140) uniform CameraData
+{
     mat4 viewMatrix;
     mat4 projMatrix;
     mat4 projMatrixInverse;

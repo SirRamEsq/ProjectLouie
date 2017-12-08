@@ -6,6 +6,7 @@ in vec2 texture_coordinates;
 in vec4 colorValue;
 
 uniform sampler2D basic_texture;
+
 out vec4 frag_colour;
 
 void main() {
