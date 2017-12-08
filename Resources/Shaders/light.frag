@@ -12,7 +12,6 @@ struct PointLight{
 };
 
 in vec2 textureCoordinates;
-in
 
 uniform sampler2D diffuseTex;
 uniform sampler2D depthTex;
@@ -33,6 +32,7 @@ layout(std140) uniform LightData{
 };
 
 out vec4 frag_color;
+
 
 vec3 CalcPointLight(in PointLight light, in vec3 fragWorld, in vec4 fragDepth){
 	// Attenuation

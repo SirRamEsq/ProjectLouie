@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <shaderProgram>
-	<vertex path = "vertexTileMain.glsl"/>
+	<vertex path = "light.vert"/>
 	<!-- <geometry path = ""/> -->
-	<fragment path = "fragmentTileMain.glsl"/>
+	<fragment path = "light.frag"/>
 </shaderProgram>
