@@ -204,6 +204,16 @@ function container.NewLouie(baseclass)
 		louie.CompCollision = CPP.interface:GetCollisionComponent(EID);
 		louie.CompSprite	= CPP.interface:GetSpriteComponent(EID);
 		louie.CompPosition  = CPP.interface:GetPositionComponent(EID);
+		louie.CompLight  = CPP.interface:GetLightComponent(EID);
+
+		--Lights
+		local cLight = louie.CompLight
+		local light = cLight:CreatePointLight()
+		local color = CPP.Vec3(2,2,2)
+		local position = CPP.Vec3(0,0,0)
+		light.color = color
+		light.distance = 1000
+		louie.light = light;
 
 		----------------
 		--Sprite setup--

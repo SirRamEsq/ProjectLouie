@@ -33,8 +33,6 @@ layout(std140) uniform LightData{
 
 out vec4 frag_color;
 
-/*
-
 vec3 CalcPointLight(in PointLight light, in vec3 fragWorld, in vec4 fragDepth){
 	// Attenuation
 	float distance = length(light.worldPos.xyz - fragWorld);
@@ -45,22 +43,21 @@ vec3 CalcPointLight(in PointLight light, in vec3 fragWorld, in vec4 fragDepth){
 
 	return (lightColor);
 }
-*/
 
 void main(){
 	// Properties
 	vec4 diffuseTexel	= texture (diffuseTex, textureCoordinates);
-	//vec4 depthTexel		= texture (depthTex, textureCoordinates);
-	//vec4 fragView = projMatrixInverse * gl_FragCoord;
-	//vec4 fragWorld = inverse(viewMatrix) * fragView;
+	vec4 depthTexel		= texture (depthTex, textureCoordinates);
+	vec4 fragView = projMatrixInverse * gl_FragCoord;
+	vec4 fragWorld = inverse(viewMatrix) * fragView;
 
 	// Phase 1: Ambient lighting
 	vec3 lightColor = AMBIENT_COLOR;
 
 	// Phase 2: Point lights
-	//for (int i = 0; i < activeLights; i++){
-		//lightColor += CalcPointLight(pointLights[i],fragWorld.xyz, depthTexel);
-	//}
+	for (int i = 0; i < activeLights; i++){
+		lightColor += CalcPointLight(pointLights[i],fragWorld.xyz, depthTexel);
+	}
 
 
 	// Phase 3: final color
