@@ -40,10 +40,10 @@ layout(std140) uniform LightData{
 out vec4 frag_color;
 
 float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-vec3 CalcPointLight(in PointLight light, in vec2 fragWorld, in vec4 fragDepth){
+vec3 CalcPointLight(in PointLight light, in vec2 fragWorld, in float fragDepth){
 	// Attenuation
 	float time = vars.x;
 	float distance = length(light.worldPos.xy - fragWorld);
@@ -52,21 +52,32 @@ vec3 CalcPointLight(in PointLight light, in vec2 fragWorld, in vec4 fragDepth){
 	//between 0.0 and 1.0
 	float attenuation = max(0.0, (light.extra.x - distance) / light.extra.x);
 
-	//if(distance < 100.0){
-		//return vec3(30.0,30.0,30.0);
+	//if(distance < 100.0)7{
+	//return vec3(30.0,30.0,30.0);
 	//}
+	
+	//returns value between -1.0 and 1.0; add one to get in 0.0 - 2.0 range
+	float lightDepth = ((projMatrix * light.worldPos).z + 1.0);
+	//get into 0.0 - 1.0 range
+	lightDepth = lightDepth / 2.0;
+	//invert
+	//lightDepth = 1.0 - lightDepth;
+	float depthCheck = float(lightDepth >= fragDepth);
 
 	vec3 lightColor = (light.color.xyz * attenuation) - (flicker * light.extra.y);
 	lightColor = max(vec3(0.0, 0.0, 0.0), lightColor);
 
-	return lightColor;
+	return (lightColor * depthCheck);
 	//return vec3(0.1,0.1,0.1);
 }
 
 void main(){
 	// Properties
 	vec4 diffuseTexel	= texture (diffuseTex, textureCoordinates);
-	vec4 depthTexel		= texture (depthTex, textureCoordinates);
+	//greater depth values are near the front
+	//returns between 0.0 and 1.0
+	float depthValue		= (texture (depthTex, textureCoordinates)).r;
+
 	vec2 fragCoord = gl_FragCoord.xy;
 	fragCoord.y = viewport.w - fragCoord.y;
 	vec4 fragWorld = inverse(viewMatrix) * vec4(fragCoord, 0.0, 1.0);
@@ -76,7 +87,7 @@ void main(){
 
 	// Phase 2: Point lights
 	for (int i = 0; i < activeLights; i++){
-		lightColor += CalcPointLight(pointLights[i],fragWorld.xy, depthTexel);
+		lightColor += CalcPointLight(pointLights[i],fragWorld.xy, depthValue);
 	}
 
 

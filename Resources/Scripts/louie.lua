@@ -207,14 +207,21 @@ function container.NewLouie(baseclass)
 		louie.CompLight  = CPP.interface:GetLightComponent(EID);
 
 		--Lights
+		CPP.interface:SetAmbientLight(.25, .25, .3)
 		local light = louie.CompLight:CreatePointLight()
-		local color = CPP.Vec3(2,1.5,1.5)
-		local position = CPP.Vec3(0,0,0)
-		light.color = color
-		light.distance = 100
-		light.noise = .2
-		light.pos = position
+		light.color = CPP.Vec3(2.5, 1, 1)
+		light.distance = 150
+		light.noise = .1
+		--light.pos =  CPP.Vec3(-100,0,20)
+		light.pos =  CPP.Vec3(-100,0,21)
 		louie.light = light;
+
+		local light2 = louie.CompLight:CreatePointLight()
+		light2.color = CPP.Vec3(1, 2.5, 1)
+		light2.distance = 100
+		light2.noise = .1
+		light2.pos =  CPP.Vec3(80,-20,0)
+		louie.light2 = light2
 
 		----------------
 		--Sprite setup--
