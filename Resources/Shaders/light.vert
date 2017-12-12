@@ -16,7 +16,11 @@ layout(location = 1) in vec2 vertTexCoord;
 uniform vec3 AMBIENT_COLOR;
 
 layout(std140) uniform ProgramData{
-	vec4 time;
+	vec4 vars;
+	//vars.x = time
+	//vars.y = ?
+	//vars.z = resolution.x
+	//vars.w = resolution.y
 };
 
 layout(std140) uniform CameraData{

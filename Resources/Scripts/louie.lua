@@ -210,9 +210,11 @@ function container.NewLouie(baseclass)
 		local cLight = louie.CompLight
 		local light = cLight:CreatePointLight()
 		local color = CPP.Vec3(2,2,2)
-		local position = CPP.Vec3(0,0,0)
+		local position = CPP.Vec3(0,-120,0)
 		light.color = color
-		light.distance = 1000
+		light.distance = 100
+		light.noise = .2
+		light.pos = position
 		louie.light = light;
 
 		----------------
