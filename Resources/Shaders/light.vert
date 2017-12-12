@@ -27,6 +27,7 @@ layout(std140) uniform CameraData{
 	mat4 viewMatrix;
 	mat4 projMatrix;
 	mat4 projMatrixInverse;
+	vec4 viewport;
 };
 
 layout(std140) uniform LightData{

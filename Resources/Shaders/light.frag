@@ -30,6 +30,7 @@ layout(std140) uniform CameraData{
 	mat4 viewMatrix;
 	mat4 projMatrix;
 	mat4 projMatrixInverse;
+	vec4 viewport;
 };
 layout(std140) uniform LightData{
 	PointLight pointLights[MAX_LIGHTS];
@@ -42,11 +43,11 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-vec3 CalcPointLight(in PointLight light, in vec3 fragWorld, in vec4 fragDepth){
+vec3 CalcPointLight(in PointLight light, in vec2 fragWorld, in vec4 fragDepth){
 	// Attenuation
 	float time = vars.x;
-	float distance = length(light.worldPos.xy - fragWorld.xy);
-	float flicker = rand(fragWorld.xy * vec2(time/fragWorld.y,time/fragWorld.x));
+	float distance = length(light.worldPos.xy - fragWorld);
+	float flicker = rand(fragWorld * vec2(time/fragWorld.y,time/fragWorld.x));
 
 	//between 0.0 and 1.0
 	float attenuation = max(0.0, (light.extra.x - distance) / light.extra.x);
@@ -64,19 +65,18 @@ vec3 CalcPointLight(in PointLight light, in vec3 fragWorld, in vec4 fragDepth){
 
 void main(){
 	// Properties
-	vec2 resolution = vars.zw;
 	vec4 diffuseTexel	= texture (diffuseTex, textureCoordinates);
 	vec4 depthTexel		= texture (depthTex, textureCoordinates);
-	vec4 fragCoord = gl_FragCoord;
-	fragCoord.y = resolution.y - fragCoord.y;
-	vec4 fragWorld = inverse(viewMatrix) * fragCoord;
+	vec2 fragCoord = gl_FragCoord.xy;
+	fragCoord.y = viewport.w - fragCoord.y;
+	vec4 fragWorld = inverse(viewMatrix) * vec4(fragCoord, 0.0, 1.0);
 
 	// Phase 1: Ambient lighting
 	vec3 lightColor = AMBIENT_COLOR;
 
 	// Phase 2: Point lights
 	for (int i = 0; i < activeLights; i++){
-		lightColor += CalcPointLight(pointLights[i],fragWorld.xyz, depthTexel);
+		lightColor += CalcPointLight(pointLights[i],fragWorld.xy, depthTexel);
 	}
 
 

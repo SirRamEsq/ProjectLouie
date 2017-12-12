@@ -207,10 +207,9 @@ function container.NewLouie(baseclass)
 		louie.CompLight  = CPP.interface:GetLightComponent(EID);
 
 		--Lights
-		local cLight = louie.CompLight
-		local light = cLight:CreatePointLight()
-		local color = CPP.Vec3(2,2,2)
-		local position = CPP.Vec3(0,-120,0)
+		local light = louie.CompLight:CreatePointLight()
+		local color = CPP.Vec3(2,1.5,1.5)
+		local position = CPP.Vec3(0,0,0)
 		light.color = color
 		light.distance = 100
 		light.noise = .2
