@@ -1,5 +1,8 @@
---package.path = package.path .. ";/opt/zbstudio/lualibs/mobdebug/?.lua"
---local mobdebug=require('mobdebug');
+--DEBUG
+package = {}
+package.path = ";/opt/zbstudio/lualibs/mobdebug/?.lua"
+local mobdebug=require('mobdebug');
+
 local collision = {}
 collision={};
 collision.cpp=nil;
