@@ -23,6 +23,7 @@ local result=0;
 result, imGuiFlags = pcall(loadfile(utilityPath .. "/imGuiWindowFlags.lua", _ENV))
 result, fadeOut = pcall(loadfile(utilityPath .. "/fadeOutLayer.lua", _ENV))
 
+
 local container = {}
 function container.NewLouie(baseclass)
 	function SetConstants(louie)
@@ -187,6 +188,13 @@ function container.NewLouie(baseclass)
 		louie.EID	= louie.LEngineData.entityID;
 		louie.name = louie.LEngineData.name
 		louie.objType = louie.LEngineData.objType
+    
+    if(louie.LEngineData.debugMode)then
+      result, mobdebug = pcall(loadfile(utilityPath .. "/mobdebug.lua", _ENV))
+      CPP.interface:LogError(louie.EID, tostring(result))
+      CPP.interface:LogError(louie.EID, tostring(mobdebug))
+      mobdebug.start("localhost")
+    end
 
 		local EID = louie.EID
 		CPP.interface:ListenForInput(EID, louie.c.K_UP);
