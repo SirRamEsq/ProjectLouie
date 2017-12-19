@@ -1,3 +1,5 @@
+--package.path = package.path .. ";/opt/zbstudio/lualibs/mobdebug/?.lua"
+--local mobdebug=require('mobdebug');
 local collision = {}
 collision={};
 collision.cpp=nil;
@@ -221,7 +223,11 @@ function collision.SetWidthHeight(w, h)
 end
 
 function collision.GetHeightMapValue(absoluteX, tileCollisionPacket)
-	if(tileCollisionPacket:GetLayer():UsesHMaps() == false) then return 16 end
+	local MAX_HEIGHT = 15
+	local MIN_HEIGHT = 0
+
+	if(tileCollisionPacket:GetLayer():UsesHMaps() == false) then return MAX_HEIGHT end
+
 	local box_value = 0;
 	local boxid=tileCollisionPacket:GetID();
 	local hmap=tileCollisionPacket:GetHmap();
@@ -240,7 +246,7 @@ function collision.GetHeightMapValue(absoluteX, tileCollisionPacket)
 	HMAP_index_value= box_value - (tx*collision.TILEWIDTH);
 
 	--Got the heightmap index value, now actually get the height value and set the proper y-value
-	if((HMAP_index_value>15)or(HMAP_index_value<0))then
+	if((HMAP_index_value>MAX_HEIGHT)or(HMAP_index_value<MIN_HEIGHT))then
 		collision.cpp:LogError(collision.EID, "Uh-Oh, index '" .. HMAP_index_value .. "' is out of bounds with boxValue '" .. box_value .. "' and tx '" .. tx .. "'");
 		collision.cpp:LogError(collision.EID, tostring(HMAP_index_value));
 		return;
