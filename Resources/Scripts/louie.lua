@@ -188,7 +188,7 @@ function container.NewLouie(baseclass)
 		louie.EID	= louie.LEngineData.entityID;
 		louie.name = louie.LEngineData.name
 		louie.objType = louie.LEngineData.objType
-    
+  
     if(louie.LEngineData.debugMode)then
       result, mobdebug = pcall(loadfile(utilityPath .. "/mobdebug.lua", _ENV))
       CPP.interface:LogError(louie.EID, tostring(result))
