@@ -6,5 +6,11 @@
    <property name="ANIMATION" value="Water"/>
    <property name="SPRITE" value="tileAnimations/SpriteGrassTerrain.xml"/>
   </properties>
+  <animation>
+   <frame tileid="160" duration="100"/>
+   <frame tileid="161" duration="100"/>
+   <frame tileid="162" duration="100"/>
+   <frame tileid="163" duration="100"/>
+  </animation>
  </tile>
 </tileset>
