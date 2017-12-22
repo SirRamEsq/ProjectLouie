@@ -216,6 +216,7 @@ function container.NewLouie(baseclass)
 		louie.CompPosition  = CPP.interface:GetPositionComponent(EID);
 		louie.CompLight  = CPP.interface:GetLightComponent(EID);
 
+		--[[
 		--Lights
 		CPP.interface:SetAmbientLight(.25, .25, .3)
 		local light = louie.CompLight:CreatePointLight()
@@ -232,6 +233,7 @@ function container.NewLouie(baseclass)
 		light2.noise = .1
 		light2.pos =  CPP.Vec3(80,-20,0)
 		louie.light2 = light2
+		]]--
 
 		----------------
 		--Sprite setup--
