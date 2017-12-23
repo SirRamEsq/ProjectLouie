@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sprite width and height is used to calculate where the origin is-->
+<sprite origin="center" width="40" height="31" transparentColor="ff00ff" textureName="rockThrower.png">
+	<animation name="Stand" speed="0.25">
+		<image x="0"   y="0" w="40" h="31"/>
+	</animation>
+	<animationSequence name="Throw" speed="0.2" startX="0" startY="0" w="40" h="31" imgs="7"/>
+</sprite>

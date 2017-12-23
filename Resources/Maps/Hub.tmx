@@ -12827,8 +12827,6 @@
  <layer name="Tile Layer 1" width="100" height="64">
   <properties>
    <property name="_DEPTH" type="int" value="0"/>
-   <property name="_SHADER_FRAG" value="fragmentTileInvert.glsl"/>
-   <property name="_SHADER_VERT" value="vertexTileMain.glsl"/>
    <property name="_SOLID" type="bool" value="true"/>
   </properties>
   <data>
@@ -19255,7 +19253,7 @@
     <property name="sprite" value="vortex.xml"/>
    </properties>
   </object>
-  <object id="11" gid="261" x="704" y="896" width="64" height="64">
+  <object id="11" gid="261" x="96" y="896" width="64" height="64">
    <properties>
     <property name="_SCRIPT" value="Items/changeMap.lua"/>
     <property name="animation" value="default"/>
