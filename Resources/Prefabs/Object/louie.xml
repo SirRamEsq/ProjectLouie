@@ -3,6 +3,7 @@
 <prefab>
 	<scripts>
 		<script name = "Common/fadeSecretLayers.lua"/>
+		<script name = "Common/grabItems.lua"/>
 		<script name = "louie.lua"/>
 	</scripts>
 </prefab>

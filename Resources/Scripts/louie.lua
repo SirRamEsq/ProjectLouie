@@ -102,7 +102,6 @@ function container.NewLouie(baseclass)
 
 		--General Movement Variables
 		louie.health= 2
-		louie.coinCount=0;
 		louie.xspd=0;
 		louie.yspd=0;
 		louie.groundSpeed=0;
@@ -188,15 +187,15 @@ function container.NewLouie(baseclass)
 		louie.EID	= louie.LEngineData.entityID;
 		louie.name = louie.LEngineData.name
 		louie.objType = louie.LEngineData.objType
-  
+
 		--[[
-    if(louie.LEngineData.debugMode)then
-      result, mobdebug = pcall(loadfile(utilityPath .. "/mobdebug.lua", _ENV))
-      CPP.interface:LogError(louie.EID, tostring(result))
-      CPP.interface:LogError(louie.EID, tostring(mobdebug))
-      mobdebug.start("localhost")
-    end
-	]]--
+		if(louie.LEngineData.debugMode)then
+			result, mobdebug = pcall(loadfile(utilityPath .. "/mobdebug.lua", _ENV))
+			CPP.interface:LogError(louie.EID, tostring(result))
+			CPP.interface:LogError(louie.EID, tostring(mobdebug))
+			mobdebug.start("localhost")
+		end
+		]]--
 
 		local EID = louie.EID
 		CPP.interface:ListenForInput(EID, louie.c.K_UP);
@@ -239,6 +238,8 @@ function container.NewLouie(baseclass)
 		--Sprite setup--
 		----------------
 		louie.mainSprite	 = CPP.interface:LoadSprite("SpriteLouie.xml");
+		louie.coinSprite 	= CPP.interface:LoadSprite("coin.xml")
+		louie.coinAnimation = "Spin"
 		louie.mainSpriteRoll = CPP.interface:LoadSprite("SpriteLouieRoll.xml");
 		louie.baldSprite	 = CPP.interface:LoadSprite("SpriteLouieBald.xml");
 		louie.baldSpriteRoll = CPP.interface:LoadSprite("SpriteLouieBaldRoll.xml");
@@ -291,6 +292,11 @@ function container.NewLouie(baseclass)
 
 		louie.currentMap = CPP.interface:GetMap()
 		louie.climb.LAYER = louie.currentMap:GetTileLayer(louie.climb.LAYER_NAME)
+
+		louie.gui = {}
+		louie.gui.font = "ebFonts/wisdom.ttf"
+		louie.gui.fontSize = 20
+		louie.LoadFont()
 	end
 
 
@@ -909,17 +915,28 @@ function container.NewLouie(baseclass)
 		louie.CompPosition:SetMovement(updateVec);
 	end
 
+	function louie.LoadFont()
+		local popFont = CPP.ImGui.PushFont(louie.gui.font, louie.gui.fontSize)
+
+		if(popFont)then
+			CPP.ImGui.PopFont(1)
+		end
+	end
 	function louie.UpdateGUI()
+		local popFont = CPP.ImGui.PushFont(louie.gui.font, louie.gui.fontSize)
+
 		local resolution = CPP.interface:GetResolution()
 		local windowFlags = imGuiFlags.NoTitleBar + imGuiFlags.NoResize + imGuiFlags.NoMove + imGuiFlags.AlwaysAutoResize
 
 		--no background
 		CPP.ImGui.PushStyleColorWindowBG(CPP.Color4f(0,0,0, 0))
-		CPP.ImGui.PushStyleColorText(CPP.Color4f(.9,.1,.1,1))
+		CPP.ImGui.PushStyleColorText(CPP.Color4f(.8,.2,.2,2))
 		louie.guiName = "louieGUI"
 
 		CPP.ImGui.BeginFlags(louie.guiName, windowFlags)
-		CPP.ImGui.Text(tostring(louie.health))
+		CPP.ImGui.Sprite(louie.coinSprite, louie.coinAnimation, 0)
+		CPP.ImGui.SameLine()
+		CPP.ImGui.Text(" X " .. tostring(louie.items.coinCount))
 		local winSize = CPP.ImGui.GetWindowSize()
 		CPP.ImGui.End()
 		CPP.ImGui.PopStyleColor(2)
@@ -927,6 +944,10 @@ function container.NewLouie(baseclass)
 		--Center Window
 		local guiPosition = CPP.Coord2df(( resolution.x/2) - (winSize.x/2), 0)
 		CPP.ImGui.SetWindowPos(louie.guiName, guiPosition, 0)
+
+		if(popFont)then
+			CPP.ImGui.PopFont(1)
+		end
 	end
 
 	function louie.PrepareForNextFrame()

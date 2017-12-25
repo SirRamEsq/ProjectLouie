@@ -17,7 +17,7 @@ function NewChangeMap(baseclass)
 
 		cMap.spriteName = cMap.LEngineData.InitializationTable["sprite"] or "vortex.xml"
 		cMap.animationName = cMap.LEngineData.InitializationTable["animation"] or ""
-		cMap.rotationSpeed = cMap.LEngineData.InitializationTable["rotationSpeed"] or 2.5
+		cMap.rotationSpeed = cMap.LEngineData.InitializationTable["rotationSpeedd"] or 2.5
 		cMap.animationSpeed = cMap.LEngineData.InitializationTable["animationSpeed"] or 0.1
 		cMap.map = cMap.LEngineData.InitializationTable["map"] or "Hub.tmx"
 
