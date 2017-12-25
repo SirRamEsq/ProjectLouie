@@ -7,7 +7,7 @@ function NewRockThrower(baseclass)
 	class.C.animationThrow = "Throw"
 	class.C.DIR_LEFT = -1
 	class.C.DIR_RIGHT = 1
-	class.C.RELOAD_TIME = 300
+	class.C.RELOAD_TIME = 150
 	class.dir = class.C.DIR_LEFT
 	class.alarm = {}
 	class.alarm.reload = 1
@@ -46,8 +46,7 @@ function NewRockThrower(baseclass)
 	end
 
 	function class.OnReload()
-		local callback = CPP.interface:CreateCallback(class.Throw)
-		class.CompSprite:AnimationPlayOnce(class.spriteID, class.C.animationThrow, callback)
+		class.CompSprite:AnimationPlayOnce(class.spriteID, class.C.animationThrow, class.Throw)
 	end
 
 	function class.Throw()
