@@ -19,9 +19,8 @@ Red - Use no special abilities (roll)
 
 ]]--
 
-local result=0;
-result, imGuiFlags = pcall(loadfile(utilityPath .. "/imGuiWindowFlags.lua", _ENV))
-result, fadeOut = pcall(loadfile(utilityPath .. "/fadeOutLayer.lua", _ENV))
+imGuiWindowFlags = require("Utility/imGuiWindowFlags.lua")
+fadeOut = require("Utility/fadeOutLayer.lua")
 
 
 local container = {}
@@ -97,7 +96,7 @@ function container.NewLouie(baseclass)
 		--Useful functions
 		local result
 		local common
-		result, common = pcall(loadfile(utilityPath .. "/commonFunctions.lua", _ENV))
+		local common = require("Utility/commonFunctions.lua")
 		louie.common = common
 
 		--General Movement Variables
@@ -126,7 +125,7 @@ function container.NewLouie(baseclass)
 		louie.climb.LAYER_NAME = "CLIMB"
 
 		--Input
-		result, louie.input = pcall(loadfile(utilityPath .. "/input.lua", _ENV))
+		louie.input = require("Utility/input.lua")
 
 		--Standing on Moving Platforms
 		louie.platformVelocityX=0;
@@ -167,8 +166,7 @@ function container.NewLouie(baseclass)
 		louie.entityCollision.grabCollision.timer.current=0
 
 		--Collision
-		--security hole here? user can just use '..' to go wherever they want
-		result, louie.tileCollision = pcall(loadfile(utilityPath .. "/tileCollisionSystemNew.lua", _ENV))
+		louie.tileCollision = require("Utility/tileCollisionSystemNew.lua")
 
 		--Sound Effects
 		louie.SoundJump = "smw_jump.wav";
