@@ -154,9 +154,9 @@ function container.NewLouie(baseclass)
 
 		--Entity collision
 		louie.entityCollision = {}
-		louie.entityCollision.primaryCollision = {}
-		louie.entityCollision.primaryCollision.box = nil
-		louie.entityCollision.primaryCollision.ID = 20
+		louie.entityCollision.primary= {}
+		louie.entityCollision.primary.box = nil
+		louie.entityCollision.primary.shape = nil
 
 		louie.entityCollision.grabCollision = {}
 		louie.entityCollision.grabCollision.box = nil
@@ -211,7 +211,7 @@ function container.NewLouie(baseclass)
 		louie.CompCollision = CPP.interface:GetCollisionComponent(EID);
 		louie.CompSprite	= CPP.interface:GetSpriteComponent(EID);
 		louie.CompPosition  = CPP.interface:GetPositionComponent(EID);
-		louie.CompLight  = CPP.interface:GetLightComponent(EID);
+		louie.CompLight		= CPP.interface:GetLightComponent(EID);
 
 		--[[
 		--Lights
@@ -236,7 +236,7 @@ function container.NewLouie(baseclass)
 		--Sprite setup--
 		----------------
 		louie.mainSprite	 = CPP.interface:LoadSprite("SpriteLouie.xml");
-		louie.coinSprite 	= CPP.interface:LoadSprite("coin.xml")
+		louie.coinSprite	= CPP.interface:LoadSprite("coin.xml")
 		louie.coinAnimation = "Spin"
 		louie.mainSpriteRoll = CPP.interface:LoadSprite("SpriteLouieRoll.xml");
 		louie.baldSprite	 = CPP.interface:LoadSprite("SpriteLouieBald.xml");
@@ -269,18 +269,20 @@ function container.NewLouie(baseclass)
 		-----------------------
 		--Collision for tiles--
 		-----------------------
-		louie.tileCollision.Init(louie.c.COL_WIDTH, louie.c.COL_HEIGHT, CPP.interface, louie.CompCollision, louie.EID);
-		louie.tileCollision.callbackFunctions.TileUp	= louie.OnTileUp;
-		louie.tileCollision.callbackFunctions.TileDown  = louie.OnTileDown;
-		louie.tileCollision.callbackFunctions.TileLeft  = louie.OnTileHorizontal;
+		louie.tileCollision.Init(louie.c.COL_WIDTH, louie.c.COL_HEIGHT, louie.EID);
+		louie.tileCollision.callbackFunctions.TileUp	= louie.OnTileUp
+		louie.tileCollision.callbackFunctions.TileDown  = louie.OnTileDown
+		louie.tileCollision.callbackFunctions.TileLeft  = louie.OnTileHorizontal
 		louie.tileCollision.callbackFunctions.TileRight = louie.OnTileHorizontal
 
 		--Primary collision
-		louie.entityCollision.primaryCollision.box = CPP.Rect(0, 0, louie.c.COL_WIDTH, louie.c.COL_HEIGHT)
-		louie.entityCollision.primaryCollision.ID = louie.CompCollision:AddCollisionBox(louie.entityCollision.primaryCollision.box)
-		louie.CompCollision:SetOrder(louie.entityCollision.primaryCollision.ID, 30)
-		louie.CompCollision:CheckForEntities(louie.entityCollision.primaryCollision.ID)
-		louie.CompCollision:SetPrimaryCollisionBox(louie.entityCollision.primaryCollision.ID)
+		louie.entityCollision.primary = {}
+		louie.entityCollision.primary.shape= CPP.Rect(0, 0, louie.c.COL_WIDTH, louie.c.COL_HEIGHT)
+		louie.entityCollision.primary.box= louie.CompCollision:AddCollisionBox(louie.entityCollision.primary.shape)
+		local ebox = louie.entityCollision.primary.box
+		ebox:SetOrder(30)
+		ebox:CheckForEntities()
+		louie.CompCollision:SetPrimaryCollisionBox(ebox)
 
 		--[[Grab collision
 		louie.entityCollision.grabCollision.box = CPP.Rect(louie.c.COL_WIDTH/2, louie.c.COL_HEIGHT/2, louie.c.COL_WIDTH/2,	1)
@@ -986,7 +988,6 @@ function container.NewLouie(baseclass)
 	function louie.OnEntityCollision(entityID, packet)
 		--Need to get height and collision type
 		local leeway=10;
-		local myBoxID=packet:GetID();
 		local objectType=packet:GetType();
 		local objectName=packet:GetName();
 		local otherEntity = CPP.interface:EntityGetInterface(entityID)
@@ -994,36 +995,34 @@ function container.NewLouie(baseclass)
 
 		if louie.input.key[louie.c.K_ACTIVATE] then otherEntity.Activate() end
 
-		if ((myBoxID==louie.entityCollision.primaryCollision.ID))then
-			local solid = otherEntity.IsSolid();
-			local bounce = otherEntity.CanBounce();
-			if(solid==true)then
-				if(bounce==true)then
-					if(louie.yspd >= bounceThreshold)then
-						local thisPos = CPP.interface:EntityGetPositionWorld(louie.EID)
-						local otherPos = CPP.interface:EntityGetPositionWorld(entityID)
-						if((thisPos.y+louie.c.HEIGHT) <= (otherPos.y + leeway) )then
-							louie.yspd = louie.yspd * -.9
-							otherEntity.Attack(1);
-						end
-					end
-				end
-				if(louie.yspd>=0)then
+		local solid = otherEntity.IsSolid();
+		local bounce = otherEntity.CanBounce();
+		if(solid==true)then
+			if(bounce==true)then
+				if(louie.yspd >= bounceThreshold)then
 					local thisPos = CPP.interface:EntityGetPositionWorld(louie.EID)
 					local otherPos = CPP.interface:EntityGetPositionWorld(entityID)
 					if((thisPos.y+louie.c.HEIGHT) <= (otherPos.y + leeway) )then
-						louie.tileCollision.groundTouch=true;
-						louie.LandOnGround(otherPos.y-louie.c.HEIGHT, 0);
-						louie.CompPosition:SetParent(entityID);
-
-						local vecMove = CPP.interface:EntityGetMovement(entityID);
-						louie.platformVelocityX=vecMove.x;
-						louie.platformVelocityY=vecMove.y;
-
-						louie.angle=0;
-
-						otherEntity.Land();
+						louie.yspd = louie.yspd * -.9
+						otherEntity.Attack(1);
 					end
+				end
+			end
+			if(louie.yspd>=0)then
+				local thisPos = CPP.interface:EntityGetPositionWorld(louie.EID)
+				local otherPos = CPP.interface:EntityGetPositionWorld(entityID)
+				if((thisPos.y+louie.c.HEIGHT) <= (otherPos.y + leeway) )then
+					louie.tileCollision.groundTouch=true;
+					louie.LandOnGround(otherPos.y-louie.c.HEIGHT, 0);
+					louie.CompPosition:SetParent(entityID);
+
+					local vecMove = CPP.interface:EntityGetMovement(entityID);
+					louie.platformVelocityX=vecMove.x;
+					louie.platformVelocityY=vecMove.y;
+
+					louie.angle=0;
+
+					otherEntity.Land();
 				end
 			end
 		end

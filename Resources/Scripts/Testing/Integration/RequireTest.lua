@@ -3,13 +3,6 @@ function con.NewState(baseclass)
 	local state = baseclass or {}
 
 	function state.Initialize()
-		state.depth		= state.LEngineData.depth;
-		state.parent	= state.LEngineData.parent;
-		state.EID		= state.LEngineData.entityID;
-		state.name = "NAME"
-	end
-
-	function state.Setup(testing)
 	end
 
 	function state.TestRequire(testing)

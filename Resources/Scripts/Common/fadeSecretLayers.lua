@@ -44,14 +44,14 @@ function container.NewFadeOut(baseclass)
 			if(secretLayers:empty() == false)then
 				local box = CPP.Rect(x,y,1,1)
 				--Create collision box only when secret layers exist
-				t.boxID = collision:AddCollisionBox(box, 240);
-				collision:CheckForTiles(t.boxID);
+				t.box = collision:AddCollisionBox(box);
+				t.box:CheckForTiles()
 
 				local layerCount = secretLayers:size()
 				for i=0, layerCount-1 do
 					local secretLayer = secretLayers:at(i)
 					if(secretLayer ~= nil)then
-						collision:CheckForLayer(t.boxID, secretLayer, t.OnSecretLayerTouch)
+						t.box:CheckForLayer(secretLayer, t.OnSecretLayerTouch)
 					end
 				end
 			end

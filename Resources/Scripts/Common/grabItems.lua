@@ -62,16 +62,16 @@ function container.NewItemCollector(baseclass)
 		local itemLayers = CPP.interface:GetLayersWithProperty(itemProperty, true)
 		if(itemLayers ~= nil) then
 			if(itemLayers:empty() == false)then
-				local box = CPP.Rect(0,0,w,h)
-				--Create collision box only when item layers exist
-				t.boxID = collision:AddCollisionBox(box, 240);
-				collision:CheckForTiles(t.boxID);
+				local shape = CPP.Rect(0,0,w,h)
+				t.box = collision:AddCollisionBox(shape, 240);
+				t.box:CheckForTiles()
+				t.box:RegisterEveryTileCollision()
 
 				local layerCount = itemLayers:size()
 				for i=0, layerCount-1 do
 					local itemLayer = itemLayers:at(i)
 					if(itemLayer ~= nil)then
-						collision:CheckForLayer(t.boxID, itemLayer, t.GetItem)
+						t.box:CheckForLayer(itemLayer, t.GetItem)
 					end
 				end
 			end

@@ -30,20 +30,15 @@ function container.new(base)
 		local eid = class.LEngineData.entityID
 		local collision = CPP.interface:GetCollisionComponent(eid)
 
-		--CPP.interface:LogWarn(eid, tostring(eid) .. " EID")
-		--CPP.interface:LogWarn(eid, "Type: " .. printTable(class) )
-		--CPP.interface:LogWarn(eid, "Type.entityCollision: " .. printTable(class.entityCollision) )
-		--CPP.interface:LogWarn(eid, "Type.UpdateFunctions: " .. printTable(class.UpdateFunctions) )
-		--CPP.interface:LogWarn(eid, "Type.InitFunctions: " .. printTable(class.InitFunctions) )
 		--Primary collision
-		class.entityCollision.primary.box = CPP.Rect(0, 0, class.C.WIDTH, class.C.HEIGHT)
-		local primaryBox = class.entityCollision.primary.box
+		class.entityCollision.primary.shape = CPP.Rect(0, 0, class.C.WIDTH, class.C.HEIGHT)
+		local shape = class.entityCollision.primary.shape
 
-		class.entityCollision.primary.ID = collision:AddCollisionBox(primaryBox)
+		class.entityCollision.primary.box = collision:AddCollisionBox(shape)
 
-		local primaryID = class.entityCollision.primary.ID
-		collision:CheckForEntities(primaryID)
-		collision:SetPrimaryCollisionBox(primaryID)
+		local box = class.entityCollision.primary.box
+		box:CheckForEntities()
+		collision:SetPrimaryCollisionBox(box)
 	end
 
 	function class.OnTileCollision(packet)
