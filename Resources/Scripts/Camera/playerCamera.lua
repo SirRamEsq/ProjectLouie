@@ -1,6 +1,4 @@
-local result=0
-local functions = nil
-result, functions = pcall(loadfile(utilityPath .. "/commonFunctions.lua", _ENV))
+local functions = require("Utility/commonFunctions.lua")
 
 function NewCamera(baseclass)
 	local camera = baseclass or {}

@@ -35,10 +35,8 @@ function NewFallingPlatform(baseclass)
       platform.spriteOffset.max = platform.spriteOffset.yDefault + 2
       platform.spriteOffset.min = platform.spriteOffset.yDefault - 2
 
-      local result=0;
-      --security hole here, user can just use '..' to go wherever they want
-      result, platform.collision = pcall(loadfile(utilityPath .. "/collisionSystem.lua", _ENV))
-      result, platform.timing    = pcall(loadfile(utilityPath .. "/timing.lua", _ENV))
+      platform.collision = {} -- require("Utility/collisionSystem.lua")
+      platform.timing    = require("Utility/timing.lua")
 
       function platform.Initialize()
         -----------------------

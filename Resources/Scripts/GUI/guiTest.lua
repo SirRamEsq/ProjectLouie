@@ -1,8 +1,7 @@
 -- ImGui TestBed
 -- Use this for a reference as to how to use the CPP.ImGui api
 
-local result=0;
-result, imGuiFlags = pcall(loadfile(utilityPath .. "/imGuiWindowFlags.lua", _ENV))
+local imGuiFlags = require("Utility/imGuiWindowFlags.lua")
 
 local container = {}
 function container.NewGui(baseclass)

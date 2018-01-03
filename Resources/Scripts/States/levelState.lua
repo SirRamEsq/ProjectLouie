@@ -1,6 +1,3 @@
-local result=0;
-result, imGuiFlags = pcall(loadfile(utilityPath .. "/imGuiWindowFlags.lua", _ENV))
-
 local container = {}
 function container.NewState(baseclass)
 	local state = baseclass or {}

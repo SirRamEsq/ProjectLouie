@@ -1,5 +1,4 @@
-local result=0;
-result, imGuiFlags = pcall(loadfile(utilityPath .. "/imGuiWindowFlags.lua", _ENV))
+local imGuiWindowFlags = require("Utility/imGuiWindowFlags.lua")
 
 local container = {}
 function container.NewState(baseclass)

@@ -11,8 +11,7 @@ function NewRockThrower(baseclass)
 	class.dir = class.C.DIR_LEFT
 	class.alarm = {}
 	class.alarm.reload = 1
-	local result=0;
-	result, class.timing    = pcall(loadfile(utilityPath .. "/timing.lua", _ENV))
+	class.timing = require("Utility/timing.lua")
 
 	local function Init()
 		local LED = class.LEngineData

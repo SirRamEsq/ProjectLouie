@@ -30,8 +30,7 @@ function NewYellowGrunt(baseclass)
 	yellowGrunt.SHOOT_TIME=20;
 
 	yellowGrunt.cboxPrimary=nil;
-	local result=0;
-	result, yellowGrunt.timing    = pcall(loadfile(utilityPath .. "/timing.lua", _ENV))
+	yellowGrunt.timing    = require("Utility/timing.lua")
 
 
 	yellowGrunt.ALARM_NAME1=1;

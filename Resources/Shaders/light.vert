@@ -1,5 +1,8 @@
 #version 300 es
 
+precision highp float;
+precision highp int;
+
 struct PointLight{
 	vec4 worldPos;
 	vec4 color;

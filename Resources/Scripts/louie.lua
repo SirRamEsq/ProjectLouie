@@ -19,8 +19,8 @@ Red - Use no special abilities (roll)
 
 ]]--
 
-imGuiWindowFlags = require("Utility/imGuiWindowFlags.lua")
-fadeOut = require("Utility/fadeOutLayer.lua")
+local imGuiFlags = require("Utility/imGuiWindowFlags.lua")
+local fadeOut = require("Utility/fadeOutLayer.lua")
 
 
 local container = {}
@@ -188,7 +188,7 @@ function container.NewLouie(baseclass)
 
 		--[[
 		if(louie.LEngineData.debugMode)then
-			result, mobdebug = pcall(loadfile(utilityPath .. "/mobdebug.lua", _ENV))
+			local mobdebug = require("Utility/mobdebug.lua")
 			CPP.interface:LogError(louie.EID, tostring(result))
 			CPP.interface:LogError(louie.EID, tostring(mobdebug))
 			mobdebug.start("localhost")

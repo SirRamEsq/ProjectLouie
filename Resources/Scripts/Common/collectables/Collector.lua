@@ -1,5 +1,4 @@
-local Collector = {}
-result, collectableFlags = pcall(loadfile(utilityPath .. "/collectableFlags.lua", _ENV))
+local collectableFlags = require("Utility/collectableFlags.lua")
 
 function Collector.new(base)
 	local collector = base or {}

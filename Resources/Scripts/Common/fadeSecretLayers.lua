@@ -8,8 +8,8 @@
 local result=0;
 local fadeOut = {}
 local functions = {}
-result, fadeOut = pcall(loadfile(utilityPath .. "/fadeOutLayer.lua", _ENV))
-result, functions = pcall(loadfile(utilityPath .. "/commonFunctions.lua", _ENV))
+fadeOut = require("Utility/fadeOutLayer.lua")
+functions = require("Utility/commonFunctions.lua")
 
 local container = {}
 function container.NewFadeOut(baseclass)
