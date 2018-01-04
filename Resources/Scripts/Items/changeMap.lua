@@ -24,20 +24,20 @@ function NewChangeMap(baseclass)
 		----------------
 		--Sprite setup--
 		----------------
-		cMap.sprite = CPP.interface:LoadSprite(cMap.spriteName);
-		if(cMap.sprite==nil) then
-			CPP.interface:LogError("sprite is NIL");
+		cMap.spriteRSC = CPP.interface:LoadSpriteResource(cMap.spriteName);
+		if(cMap.spriteRSC ==nil) then
+			CPP.interface:LogError(EID, "sprite is NIL");
 		end
-		cMap.sprWidth = cMap.sprite:Width()
-		cMap.sprHeight = cMap.sprite:Height()
+		cMap.sprWidth = cMap.spriteRSC:Width()
+		cMap.sprHeight = cMap.spriteRSC:Height()
 
 		--Logical origin is as at the top left; (0,0) is top left
 		--Renderable origin is at center;       (-width/2, -width/2) is top left
 		--To consolodate the difference, use the Vec2 offset (WIDTH/2, HEIGHT/2)
-		cMap.spriteID = cMap.spriteComp:AddSprite(cMap.sprite, cMap.depth, 0, 0);
-		cMap.spriteComp:SetAnimation(cMap.spriteID, cMap.animationName);
-		cMap.spriteComp:SetAnimationSpeed(cMap.spriteID, cMap.animationSpeed);
-		cMap.spriteComp:SetRotation (cMap.spriteID, 0);
+		cMap.sprite = cMap.spriteComp:AddSprite(cMap.spriteRSC, cMap.depth);
+		cMap.sprite:SetAnimation(cMap.animationName);
+		cMap.sprite:SetAnimationSpeed(cMap.animationSpeed);
+		cMap.sprite:SetRotation (0);
 		cMap.rotation = 0
 
 		-------------------
@@ -53,7 +53,7 @@ function NewChangeMap(baseclass)
 	function cMap.Update()
 		if cMap.rotationSpeed ~= 0 then
 			cMap.rotation = cMap.rotation + cMap.rotationSpeed
-			cMap.spriteComp:SetRotation (cMap.spriteID, cMap.rotation);
+			cMap.sprite:SetRotation (cMap.rotation);
 		end
 	end
 

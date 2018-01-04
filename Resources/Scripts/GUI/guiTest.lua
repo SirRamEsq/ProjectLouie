@@ -40,9 +40,9 @@ function container.NewGui(baseclass)
 		gui.winSize = CPP.Coord2df(0,0)
 
 		gui.winName = "TEST1"
-	
-		gui.sprite1 = CPP.interface:LoadSprite("test.xml");
-		if(gui.sprite1 == nil)then
+
+		gui.spriteRSC = CPP.interface:LoadSpriteResource("test.xml");
+		if(gui.spriteRSC == nil)then
 			CPP.interface:LogError(gui.EID, "Sprite is NIL!")
 		end
 		gui.maxFrames=3
@@ -57,16 +57,16 @@ function container.NewGui(baseclass)
 		gui.fontSize = 30
 		--load font before remap key button is pushed
 		gui.LoadFont()
-			
+
 		CPP.interface:ListenForInput(gui.EID, "specialLuaKey");
 		gui.myPositionComp	= CPP.interface:GetPositionComponent (EID);
 		gui.myParticleComp	= CPP.interface:GetParticleComponent (EID);
 		gui.myCameraComp	= CPP.interface:GetCameraComponent (EID);
-		gui.sprite	 = CPP.interface:LoadSprite("test.xml");
+		gui.sprite	 = CPP.interface:LoadSpriteResource("test.xml");
 		gui.animation = "test";
 		gui.mySpriteComp	= CPP.interface:GetSpriteComponent (EID);
-		gui.mainSpriteID	= gui.mySpriteComp:AddSprite(gui.sprite, gui.depth, 64, 64);
-		gui.mySpriteComp:SetAnimation		(gui.mainSpriteID, "test");
+		gui.mainSprite	= gui.mySpriteComp:AddSprite(gui.sprite, gui.depth, 64, 64);
+		gui.mainSprite:SetAnimation	( "test");
 
 		--just for giggles
 		local resolution = CPP.interface:GetResolution()
@@ -103,7 +103,7 @@ function container.NewGui(baseclass)
 		gui.particleCreator:SetColor(0.1, 0.6, 0.7, 0.1,	0.2, 0.8, 0.9, 1.0);
 		gui.particleCreator:SetColor(1, 1, 1, 1,	1, 1, 1, 1);
 		--gui.particleCreator:SetColor(0.0, 0.0, 0.0, 1.0,	1.0, 1.0, 1.0, 1.0);
-		
+
 		--gui.particleCreator:SetSprite(gui.sprite)
 		--gui.particleCreator:SetAnimation(gui.animation)
 		--gui.particleCreator:SetAnimationFrame(0)
@@ -112,7 +112,7 @@ function container.NewGui(baseclass)
 		--gui.particleCreator:SetPointIntensity(50)
 		gui.particleCreator:SetRandomUV(false)
 		gui.particleCreator:SetWarpQuads(false)
-		
+
 		gui.particleCreator:SetShape(4);
 		gui.particleCreator:SetEffect(2);
 		gui.particleCreator:Start();
@@ -141,45 +141,45 @@ function container.NewGui(baseclass)
 		--CPP.ImGui.SetNextWindowSize(gui.defaultWindowSize, 0)
 		--CPP.ImGui.SetNextWindowPos(gui.defaultWindowPos, 0)
 		CPP.ImGui.BeginFlags(gui.winName, windowFlags)
-			CPP.ImGui.Text("Testing!")
-			CPP.ImGui.SameLine()
-			CPP.ImGui.Text( "-_-" )
-			CPP.ImGui.Text( "Resolution: " .. tostring(resolution.x) .. "x" .. tostring(resolution.y) )
-			CPP.ImGui.Text( "This Window Size: " .. tostring(gui.winSize.x) .. "x" .. tostring(gui.winSize.y) )
+		CPP.ImGui.Text("Testing!")
+		CPP.ImGui.SameLine()
+		CPP.ImGui.Text( "-_-" )
+		CPP.ImGui.Text( "Resolution: " .. tostring(resolution.x) .. "x" .. tostring(resolution.y) )
+		CPP.ImGui.Text( "This Window Size: " .. tostring(gui.winSize.x) .. "x" .. tostring(gui.winSize.y) )
 
-			CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.sprite1, "test", 0)
-			CPP.ImGui.Separator()
+		CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.SameLine(); CPP.ImGui.Sprite(gui.spriteRSC, "test", 0)
+		CPP.ImGui.Separator()
 
-			CPP.ImGui.Text("More Text")
-			local buttonPress = CPP.ImGui.Button("Press This")
-			local spriteButtonPress = CPP.ImGui.SpriteButton(gui.sprite1, "test", 0)
+		CPP.ImGui.Text("More Text")
+		local buttonPress = CPP.ImGui.Button("Press This")
+		local spriteButtonPress = CPP.ImGui.SpriteButton(gui.spriteRSC, "test", 0)
 
-			CPP.ImGui.Text("Animation ProgressBar")
-			CPP.ImGui.ProgressBar(progressBarFill, CPP.Coord2df(128, 16))
-			CPP.ImGui.SameLine()
-			CPP.ImGui.Text("-_-")
+		CPP.ImGui.Text("Animation ProgressBar")
+		CPP.ImGui.ProgressBar(progressBarFill, CPP.Coord2df(128, 16))
+		CPP.ImGui.SameLine()
+		CPP.ImGui.Text("-_-")
 
-			local mousePos = CPP.interface:GetMousePosition()
-			local mouseWheel = CPP.interface:GetMouseWheel()
-			CPP.ImGui.Text("MouseX: " .. tostring(mousePos.x))
-			CPP.ImGui.Text("MouseY: " .. tostring(mousePos.y))
-			CPP.ImGui.Text("MouseWheel: " .. tostring(mouseWheel))
+		local mousePos = CPP.interface:GetMousePosition()
+		local mouseWheel = CPP.interface:GetMouseWheel()
+		CPP.ImGui.Text("MouseX: " .. tostring(mousePos.x))
+		CPP.ImGui.Text("MouseY: " .. tostring(mousePos.y))
+		CPP.ImGui.Text("MouseWheel: " .. tostring(mouseWheel))
 
-			if(CPP.interface:GetMouseButtonRight())then
-				CPP.ImGui.Text("MouseButtonRight")
-			end
-			if(CPP.interface:GetMouseButtonMiddle())then
-				CPP.ImGui.Text("MouseButtonMiddle")
-			end
+		if(CPP.interface:GetMouseButtonRight())then
+			CPP.ImGui.Text("MouseButtonRight")
+		end
+		if(CPP.interface:GetMouseButtonMiddle())then
+			CPP.ImGui.Text("MouseButtonMiddle")
+		end
 
-			remap = CPP.ImGui.Button("Remap Input")
+		remap = CPP.ImGui.Button("Remap Input")
 
 		if(buttonPress == true)then
 			CPP.interface:LogError(gui.EID, "Button Pressed!")
@@ -212,7 +212,7 @@ function container.NewGui(baseclass)
 			if(gui.simulateKeyPress == false) then
 				CPP.interface:SimulateKeyPress("specialLuaKey")
 				CPP.interface:SimulateKeyRelease("specialLuaKey")
-				
+
 				gui.simulateKeyPress = true
 			end
 		else
@@ -221,7 +221,7 @@ function container.NewGui(baseclass)
 
 		--Right Align Window
 		if(CPP.interface:GetMouseButtonRight())then
-			 gui.currentPosition = CPP.Coord2df(( resolution.x) - (gui.winSize.x), gui.translateY)
+			gui.currentPosition = CPP.Coord2df(( resolution.x) - (gui.winSize.x), gui.translateY)
 		end
 
 		gui.translateY = gui.translateY - (CPP.interface:GetMouseWheel()*5)
@@ -231,14 +231,14 @@ function container.NewGui(baseclass)
 			local windowFlags2 = imGuiFlags.NoTitleBar + imGuiFlags.NoMove + imGuiFlags.NoResize + imGuiFlags.AlwaysAutoResize
 			windowFlags2 = windowFlags2 + imGuiFlags.AlwaysAutoResize
 			local popFont = CPP.ImGui.PushFont(gui.font, gui.fontSize)
-			local newPos = CPP.Coord2df(0,0) 
+			local newPos = CPP.Coord2df(0,0)
 
 			CPP.ImGui.SetNextWindowPos(newPos, 0)
 			CPP.ImGui.SetNextWindowSize(resolution, 0)
 			CPP.ImGui.SetNextWindowFocus();
 			CPP.ImGui.PushStyleColorWindowBG(CPP.Color4f(0, 0.3, 0.3, 1))
 			CPP.ImGui.BeginFlags("Input", windowFlags2)
-				CPP.ImGui.Text("Press Key")
+			CPP.ImGui.Text("Press Key")
 			CPP.ImGui.End()
 
 			CPP.interface:RemapInputToNextKeyPress("specialLuaKey")

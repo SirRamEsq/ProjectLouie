@@ -39,7 +39,7 @@ function container.NewBoxBreak(baseclass)
 		box.boxType = box.LEngineData.InitializationTable.boxType or 0
 
 
-		box.sprite	 = CPP.interface:LoadSprite("SpriteBox.xml");
+		box.sprite	 = CPP.interface:LoadSpriteResource("SpriteBox.xml");
 
 		box.timerMax = 200
 		box.timer = 200

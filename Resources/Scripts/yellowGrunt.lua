@@ -1,134 +1,139 @@
 function NewYellowGrunt(baseclass)
-	local yellowGrunt = baseclass or {}
+	local class = baseclass or {}
 	--Constants
-	yellowGrunt.WIDTH=16;
-	yellowGrunt.HEIGHT=16;
-	yellowGrunt.GRAVITY=0.21875;
-	yellowGrunt.JUMPHEIGHT=-5;
+	class.WIDTH=16
+	class.HEIGHT=16
+	class.GRAVITY=0.21875
+	class.JUMPHEIGHT=-5
 
-	yellowGrunt.ySpeed = 0;
-	yellowGrunt.xSpeed = 0;
-	yellowGrunt.xSpeedMax=2;
-	yellowGrunt.xSpeedIncrement=.2
-	yellowGrunt.negative=false;
+	class.ySpeed = 0
+	class.xSpeed = 0
+	class.xSpeedMax=2
+	class.xSpeedIncrement=.2
+	class.negative=false
 
-	yellowGrunt.DIRECTION_LEFT="left";
-	yellowGrunt.DIRECTION_RIGHT="right";
-	yellowGrunt.DIRECTION=0;
+	class.DIRECTION_LEFT="left"
+	class.DIRECTION_RIGHT="right"
+	class.DIRECTION=0
 
-	yellowGrunt.xPos = 0
-	yellowGrunt.yPos = 0
+	class.xPos = 0
+	class.yPos = 0
 
-	yellowGrunt.CBOX_PRIME_ID=0;
+	class.CBOX_PRIME_ID=0
 
-	yellowGrunt.CBOX_X=0;
-	yellowGrunt.CBOX_Y=0;
-	yellowGrunt.CBOX_W=16;
-	yellowGrunt.CBOX_H=16;
+	class.CBOX_X=0
+	class.CBOX_Y=0
+	class.CBOX_W=16
+	class.CBOX_H=16
 
-	yellowGrunt.RELOAD_TIME=60;
-	yellowGrunt.SHOOT_TIME=20;
+	class.RELOAD_TIME=60
+	class.SHOOT_TIME=20
 
-	yellowGrunt.cboxPrimary=nil;
-	yellowGrunt.timing    = require("Utility/timing.lua")
+	class.cboxPrimary=nil
+	class.timing    = require("Utility/timing.lua")
 
 
-	yellowGrunt.ALARM_NAME1=1;
-	yellowGrunt.ALARM_NAME2=2;
+	class.ALARM_NAME1=1
+	class.ALARM_NAME2=2
 
-	yellowGrunt.arrowsFired=0;
+	class.arrowsFired=0
 
 	--C++ Interfacing
-	yellowGrunt.CPPInterface=nil;
-	yellowGrunt.mySprite=nil;
-	yellowGrunt.mySpriteComp=nil;
-	yellowGrunt.mySpriteID=0;
-	yellowGrunt.myColComp=nil;
-	yellowGrunt.myPositionComp=nil;
-	yellowGrunt.EID=0;
-	yellowGrunt.depth=0;
-	yellowGrunt.parentEID=0;
+	class.CPPInterface=nil
+	class.mySprite=nil
+	class.mySpriteComp=nil
+	class.mySpriteID=0
+	class.myColComp=nil
+	class.myPositionComp=nil
+	class.EID=0
+	class.depth=0
+	class.parentEID=0
 
 
-	function yellowGrunt.Initialize()
+	function class.Initialize()
 		-----------------------
 		--C++ Interface setup--
 		-----------------------
 
-		yellowGrunt.depth        = yellowGrunt.LEngineData.depth;
-		yellowGrunt.parentEID       = yellowGrunt.LEngineData.parentEID;
-		yellowGrunt.CPPInterface = CPP.interface
-		yellowGrunt.EID          = yellowGrunt.LEngineData.entityID;
+		class.depth        = class.LEngineData.depth
+		class.parentEID       = class.LEngineData.parentEID
+		class.CPPInterface = CPP.interface
+		class.EID          = class.LEngineData.entityID
+		local EID = class.EID
 
-		yellowGrunt.mySpriteComp   = yellowGrunt.CPPInterface:GetSpriteComponent    (yellowGrunt.EID);
-		yellowGrunt.myColComp      = yellowGrunt.CPPInterface:GetCollisionComponent (yellowGrunt.EID);
-		yellowGrunt.myPositionComp = yellowGrunt.CPPInterface:GetPositionComponent  (yellowGrunt.EID);
+		class.mySpriteComp   = class.CPPInterface:GetSpriteComponent    (EID)
+		class.myColComp      = class.CPPInterface:GetCollisionComponent (EID)
+		class.myPositionComp = class.CPPInterface:GetPositionComponent  (EID)
 
 		----------------
 		--Sprite setup--
 		----------------
-		yellowGrunt.mySprite = yellowGrunt.CPPInterface:LoadSprite("SpriteYellowGrunt.xml");
-		if(yellowGrunt.mySprite==nil) then
-			yellowGrunt.CPPInterface:LogError("sprite is NIL");
+		class.spriteRSC = CPP.interface:LoadSpriteResource("SpriteYellowGrunt.xml")
+		if(class.spriteRSC==nil) then
+			class.CPPInterface:LogError("sprite is NIL")
 		end
 
-		--Logical origin is as at the top left; (0,0) is top left
-		--Renderable origin is at center;       (-width/2, -width/2) is top left
+		--Logical origin is as at the top left (0,0) is top left
+		--Renderable origin is at center       (-width/2, -width/2) is top left
 		--To consolodate the difference, use the Vec2 offset (WIDTH/2, HEIGHT/2)
-		yellowGrunt.mySpriteID = yellowGrunt.mySpriteComp:AddSprite(yellowGrunt.mySprite, yellowGrunt.depth,0,0)
-		yellowGrunt.mySpriteComp:SetAnimation(yellowGrunt.mySpriteID, "Stand");
-		yellowGrunt.mySpriteComp:SetRotation(yellowGrunt.mySpriteID, 0);
+		class.sprite = class.mySpriteComp:AddSprite(class.spriteRSC, class.depth)
+		class.sprite:SetAnimation("Stand")
+		class.sprite:SetRotation(0)
 
-		yellowGrunt.dir=yellowGrunt.LEngineData.InitializationTable.direction or "right"
-		if yellowGrunt.dir == "left" then yellowGrunt.DIRECTION=yellowGrunt.DIRECTION_LEFT else yellowGrunt.DIRECTION=yellowGrunt.DIRECTION_RIGHT end
+		class.dir = class.LEngineData.InitializationTable.direction or "right"
+		if class.dir == "left" then
+			class.DIRECTION=class.DIRECTION_LEFT
+		else
+			class.DIRECTION=class.DIRECTION_RIGHT
+		end
 
-		yellowGrunt.timing:SetAlarm(yellowGrunt.ALARM_NAME1, yellowGrunt.SHOOT_TIME, yellowGrunt.OnShoot, false) --don't repeat alarms
-		yellowGrunt.timing:SetAlarm(yellowGrunt.ALARM_NAME2, yellowGrunt.RELOAD_TIME, yellowGrunt.OnReload, false) --don't repeat alarms
-		yellowGrunt.timing:GetAlarm(yellowGrunt.ALARM_NAME2):Disable();
+		class.timing:SetAlarm(class.ALARM_NAME1, class.SHOOT_TIME, class.OnShoot, false) --don't repeat alarms
+		class.timing:SetAlarm(class.ALARM_NAME2, class.RELOAD_TIME, class.OnReload, false) --don't repeat alarms
+		class.timing:GetAlarm(class.ALARM_NAME2):Disable()
 	end
 
-	function yellowGrunt.OnShoot()
+	function class.OnShoot()
 		--create entity and listen to events
-		local entityArrow;
-		local position=yellowGrunt.myPositionComp:GetPositionWorld();
-		yellowGrunt.arrowsFired=yellowGrunt.arrowsFired+1;
+		local entityArrow
+		local position=class.myPositionComp:GetPositionWorld()
+		class.arrowsFired=class.arrowsFired+1
 
-		local name = "";
+		local name = ""
 		local scriptName = "Items/Projectiles/arrow.lua"
-		entityArrow = yellowGrunt.CPPInterface:EntityNew(
-			name, position.x, position.y, yellowGrunt.depth, 0, scriptName,
-		{direction = yellowGrunt.DIRECTION, shooterEID = yellowGrunt.EID})
+		entityArrow = class.CPPInterface:EntityNew(
+		name, position.x, position.y, class.depth, 0, scriptName,
+		{direction = class.DIRECTION, shooterEID = class.EID})
 
-		yellowGrunt.CPPInterface:EventLuaObserveEntity(yellowGrunt.EID, entityArrow);
+		class.CPPInterface:EventLuaObserveEntity(class.EID, entityArrow)
 
 		--Update sprite
-		yellowGrunt.mySpriteComp:SetAnimation(yellowGrunt.mySpriteID, "Shoot");
+		class.sprite:SetAnimation("Shoot")
 
 		--Update Alarm
-		local alarm=yellowGrunt.timing:GetAlarm(yellowGrunt.ALARM_NAME2)
-		alarm:Restart();
+		local alarm=class.timing:GetAlarm(class.ALARM_NAME2)
+		alarm:Restart()
 	end
 
-	function yellowGrunt.OnReload()
+	function class.OnReload()
 		--Update Sprite
-		yellowGrunt.mySpriteComp:SetAnimation(yellowGrunt.mySpriteID, "Stand");
+		class.sprite:SetAnimation("Stand")
 
 		--Update Alarm
-		local alarm=yellowGrunt.timing:GetAlarm(yellowGrunt.ALARM_NAME1)
-		alarm:Restart();
+		local alarm=class.timing:GetAlarm(class.ALARM_NAME1)
+		alarm:Restart()
 	end
 
-	function yellowGrunt.Update()
-		yellowGrunt.timing:Update();
+	function class.Update()
+		class.timing:Update()
 	end
 
-	function yellowGrunt.OnLuaEvent(senderEID, eventString)
+	function class.OnLuaEvent(senderEID, eventString)
 	end
 
-	yellowGrunt.EntityInterface = yellowGrunt.EntityInterface or {}
-	yellowGrunt.EntityInterface.CanBounce   = function ()       return true; end
+	class.EntityInterface = class.EntityInterface or {}
+	class.EntityInterface.CanBounce   = function ()       return true end
 
-	return yellowGrunt;
+	return class
 end
 
-return NewYellowGrunt;
+return NewYellowGrunt

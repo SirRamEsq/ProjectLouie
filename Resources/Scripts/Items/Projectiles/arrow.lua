@@ -66,7 +66,7 @@ function arrow.Initialize()
 	--Sprite setup--
 	----------------
 
-	arrow.mySprite = arrow.CPPInterface:LoadSprite("SpriteArrow.xml");
+	arrow.mySprite = arrow.CPPInterface:LoadSpriteResource("SpriteArrow.xml");
 	if(arrow.mySprite==nil) then
 		arrow.CPPInterface:LogError("sprite is NIL");
 	end

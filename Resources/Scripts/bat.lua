@@ -8,22 +8,22 @@ function container.New(baseclass)
 	local Init = function()
 		local eid = bat.LEngineData.entityID
 		local depth = bat.LEngineData.depth
-		local spriteComp = CPP.interface:GetSpriteComponent(eid);
-		local sprite = CPP.interface:LoadSprite("bat.xml");
+		local spriteComp = CPP.interface:GetSpriteComponent(eid)
+		local spriteResource = CPP.interface:LoadSpriteResource("bat.xml")
 
-		if( sprite==nil ) then
-			CPP.interface:LogError(eid, "sprite is NIL");
+		if( spriteResource==nil ) then
+			CPP.interface:LogError(eid, "spriteResource is NIL")
 		end
 
-		local spriteID	= spriteComp:AddSprite(sprite, depth, 0, 0);
+		local sprite	= spriteComp:AddSprite(spriteResource, depth)
 
 		math.randomseed(os.clock()*100000000000)
 		local newImage =  math.random(0, 5)
-		local newImageSpeed = spriteComp:GetAnimationSpeed(spriteID) - (math.random() / 16)
-		spriteComp:SetAnimation		(spriteID, "Fly");
-		spriteComp:SetAnimationSpeed(spriteID, newImageSpeed);
-		spriteComp:SetImage         (spriteID, newImage)
-		spriteComp:SetRotation		(spriteID, 0);
+		local newImageSpeed = sprite:GetAnimationSpeed() - (math.random() / 16)
+		sprite:SetAnimation		("Fly")
+		sprite:SetAnimationSpeed(newImageSpeed)
+		sprite:SetImage         (newImage)
+		sprite:SetRotation		(0)
 	end
 
 	local Update = function()

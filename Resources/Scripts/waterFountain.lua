@@ -38,7 +38,7 @@ function NewFountain(baseclass)
 		water.myParticleComp	= water.CPPInterface:GetParticleComponent (EID);
 
 
-		--water.sprite	 = CPP.interface:LoadSprite("SpriteLouie.xml");
+		--water.sprite	 = CPP.interface:LoadSpriteResource("SpriteLouie.xml");
 		--water.animation = "Stand";
 		--------------------
 		--Particle Effects--

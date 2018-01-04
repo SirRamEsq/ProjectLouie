@@ -64,7 +64,7 @@ local entity = baseclass or {}
 		----------------
 		--Sprite setup--
 		----------------
-		entity.sprite = entity.CPPInterface:LoadSprite(entity.spriteName);
+		entity.sprite = entity.CPPInterface:LoadSpriteResource(entity.spriteName);
 		if(entity.sprite==nil) then
 			entity.CPPInterface:LogError(entity.EID, "sprite is NIL");
 		end

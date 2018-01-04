@@ -25,13 +25,13 @@ function NewRockThrower(baseclass)
 		class.CompPos   = iface:GetPositionComponent (class.EID)
 
 		local spriteName = class.C.spriteName
-		class.sprite = iface:LoadSprite(spriteName)
-		if(class.sprite == nil)then
+		class.spriteRSC = iface:LoadSpriteResource(spriteName)
+		if(class.spriteRSC == nil)then
 			iface:LogError("Sprite named '" .. spriteName .. "' is NIL")
 		end
 
-		class.spriteID = class.CompSprite:AddSprite(class.sprite, class.depth, 0, 0)
-		class.CompSprite:SetAnimation(class.spriteID, class.C.animationStand)
+		class.sprite = class.CompSprite:AddSprite(class.spriteRSC, class.depth, 0, 0)
+		class.sprite:SetAnimation(class.C.animationStand)
 
 		class.dir=LED.InitializationTable.direction or "right"
 		if class.dir == "left" then
@@ -39,17 +39,17 @@ function NewRockThrower(baseclass)
 		else
 			class.dir = class.C.DIR_RIGHT
 		end
-		class.CompSprite:SetScalingX(class.spriteID, class.dir)
+		class.sprite:SetScalingX(class.dir)
 
 		class.timing:SetAlarm(class.alarm.reload, class.C.RELOAD_TIME, class.OnReload, true)
 	end
 
 	function class.OnReload()
-		class.CompSprite:AnimationPlayOnce(class.spriteID, class.C.animationThrow, class.Throw)
+		class.sprite:AnimationPlayOnce(class.C.animationThrow, class.Throw)
 	end
 
 	function class.Throw()
-		class.CompSprite:SetAnimation(class.spriteID, class.C.animationStand)
+		class.sprite:SetAnimation(class.C.animationStand)
 	end
 
 	local function Update()

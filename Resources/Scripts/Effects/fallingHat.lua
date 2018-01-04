@@ -42,7 +42,7 @@ function container.NewFallingHat(baseclass)
 		hat.CompParticle	= CPP.interface:GetParticleComponent (EID);
 		hat.dir = hat.LEngineData.InitializationTable.direction or 1
 
-		hat.sprite	 = CPP.interface:LoadSprite("louieHat.xml");
+		hat.sprite	 = CPP.interface:LoadSpriteResource("louieHat.xml");
 		hat.spriteID = hat.CompSprite:AddSprite(hat.sprite, hat.depth, hat.sprite:Width()/2 ,hat.sprite:Height()/2);
 		hat.animation = "hat"
 		hat.rotation = 0
