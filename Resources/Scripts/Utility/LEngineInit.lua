@@ -22,12 +22,13 @@ container.NewLEngine = function ()
   }
 
   --This function is run before anything else is run in the script
-  LEngine.Initialize= function (id, name, objType, depth, parent, debug)
+  LEngine.Initialize= function (id, name, objType, depth, parent, stateEID, debug)
     LEngine.parentEID  =parent;
     LEngine.depth      =depth;
     LEngine.entityID   =id;
     LEngine.objType    =objType;
     LEngine.name       =name;
+	LEngine.stateEID = stateEID
 	LEngine.debugMode 	= debug or false;
 
 	if (CPP.interface == nil) then error("LEngine::Initialize - CPP.interface is nil") end

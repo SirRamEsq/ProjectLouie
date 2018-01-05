@@ -301,6 +301,15 @@ function container.NewLouie(baseclass)
 		louie.gui.font = "ebFonts/wisdom.ttf"
 		louie.gui.fontSize = 20
 		louie.LoadFont()
+
+		--Load save data
+		local state = CPP.interface:EntityGetInterface(louie.LEngineData.stateEID)
+		louie.saveData = state.GetSaveData()
+		local coins = 0
+		if(louie.saveData:ExistsInt("Coins"))then
+			coins = louie.saveData:GetInt("Coins")	
+		end
+		louie.items.coinCount = coins
 	end
 
 
@@ -322,6 +331,7 @@ function container.NewLouie(baseclass)
 	end
 
 	function louie.MainUpdate()
+		louie.saveData:SetInt("Coins", louie.items.coinCount)
 		louie.SetCollisionBoxes()
 		louie.Climb()
 		louie.WallSlide()
