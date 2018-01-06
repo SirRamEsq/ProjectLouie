@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="2017.12.21" orientation="orthogonal" renderorder="left-up" width="200" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#3172c1" nextobjectid="15">
+ <properties>
+  <property name="_AMBIENT_B" type="float" value="0.8"/>
+  <property name="_AMBIENT_G" type="float" value="0.8"/>
+  <property name="_AMBIENT_R" type="float" value="0.8"/>
+ </properties>
  <tileset firstgid="1" source="TileSets/terrainGrassy.tsx"/>
  <tileset firstgid="257" source="TileSets/icons.tsx"/>
- <tileset firstgid="263" source="TileSets/items.tsx"/>
+ <tileset firstgid="264" source="TileSets/items.tsx"/>
  <imagelayer name="bgimg">
   <image source="rapciu_horizon.png"/>
   <properties>
@@ -63511,7 +63516,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63709,31 +63714,31 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
-   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
    <tile/>
-   <tile gid="265"/>
-   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63909,11 +63914,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
-   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
    <tile/>
-   <tile gid="265"/>
-   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -65720,11 +65725,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
-   <tile gid="265"/>
-   <tile gid="265"/>
-   <tile gid="265"/>
-   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -66313,9 +66318,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="265"/>
-   <tile gid="265"/>
-   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -66406,7 +66411,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="313"/>
+   <tile gid="314"/>
    <tile/>
    <tile/>
    <tile/>
@@ -83919,7 +83924,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="346"/>
+   <tile gid="347"/>
    <tile/>
    <tile/>
    <tile/>
@@ -84126,22 +84131,22 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="343"/>
+   <tile gid="344"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="343"/>
+   <tile gid="344"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="343"/>
+   <tile gid="344"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="343"/>
+   <tile gid="344"/>
    <tile/>
    <tile/>
    <tile/>
@@ -87173,7 +87178,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="343"/>
+   <tile gid="344"/>
    <tile/>
    <tile/>
    <tile/>
