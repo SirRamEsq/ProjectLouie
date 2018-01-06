@@ -39,7 +39,7 @@ function container.NewFadeOut(baseclass)
 		local y = class.C.HEIGHT / 2
 
 		t.currentMap = CPP.interface:GetMap()
-		local secretLayers = CPP.interface:GetLayersWithProperty(secretProperty, true)
+		local secretLayers = CPP.interface:GetLayersWithProperty(t.currentMap, secretProperty, true)
 		if(secretLayers ~= nil) then
 			if(secretLayers:empty() == false)then
 				local box = CPP.Rect(x,y,1,1)

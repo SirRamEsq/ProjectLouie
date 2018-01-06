@@ -171,7 +171,6 @@ function container.NewLouie(baseclass)
 		--Sound Effects
 		louie.SoundJump = "smw_jump.wav"
 		louie.SoundFireball = "smw_fireball.wav"
-		louie.SoundCoin = "smw_coin.wav"
 	end
 
 	function louie.MainInitialize()
@@ -1041,7 +1040,6 @@ function container.NewLouie(baseclass)
 	function louie.GetHat()
 		if(louie.health <= 1)then
 			louie.health = 2
-			CPP.interface:PlaySound(louie.SoundCoin, 100)
 		end
 	end
 
@@ -1067,7 +1065,7 @@ function container.NewLouie(baseclass)
 
 			--destroy box
 			layer:SetTile(tx,ty, 0)
-			layer:UpdateRenderArea(CPP.Rect(tx,ty, 0,0))
+			layer:UpdateRenderArea(CPP.Rect(tx,ty, 1,1))
 
 			--Display box break effect
 			local name = ""

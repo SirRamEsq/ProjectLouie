@@ -6,9 +6,6 @@
 --uses [bool]'hasItems' by default
 --
 --will increment class.items.coinCount
---
---Outstanding bugs:
---Collision will only register one item per frame
 --]]
 
 local container = {}
@@ -17,18 +14,20 @@ function container.NewItemCollector(baseclass)
 
 	class.items = {}
 	class.items.coinCount = 0
+	class.SoundCoin = "smw_coin.wav"
 
 	--laconic access
 	local t = class.items
 
 	function t.GetCoin(coinValue)
-		t.coinCount = t.coinCount + coinValue	
+		t.coinCount = t.coinCount + coinValue
+		CPP.interface:PlaySound(class.SoundCoin, 100)
 		return true
 	end
 
 	function t.RemoveItemFromLayer(layer, tx, ty)
 		layer:SetTile(tx,ty, 0)
-		layer:UpdateRenderArea(CPP.Rect(tx,ty, 0,0))
+		layer:UpdateRenderArea(CPP.Rect(tx,ty, 1,1))
 	end
 
 	function t.GetItem(packet)
@@ -55,11 +54,11 @@ function container.NewItemCollector(baseclass)
 		local itemProperty = initData.itemLayerProperty or "hasItems"
 
 		local collision = CPP.interface:GetCollisionComponent(EID)
-		local w = class.C.WIDTH 
-		local h = class.C.HEIGHT 
+		local w = class.C.WIDTH
+		local h = class.C.HEIGHT
 
 		t.currentMap = CPP.interface:GetMap()
-		local itemLayers = CPP.interface:GetLayersWithProperty(itemProperty, true)
+		local itemLayers = CPP.interface:GetLayersWithProperty(t.currentMap, itemProperty, true)
 		if(itemLayers ~= nil) then
 			if(itemLayers:empty() == false)then
 				local shape = CPP.Rect(0,0,w,h)

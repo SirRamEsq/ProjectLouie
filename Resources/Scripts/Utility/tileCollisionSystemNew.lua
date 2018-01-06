@@ -155,7 +155,8 @@ function c.Init(w, h, eid)
 	boxRects[boxID.TILE_DOWN_L]=
 	CPP.Rect(coords.GROUND_L_X_OFFSET,	coords.GROUND_Y_OFFSET,		0,	coords.GROUND_H_OFFSET)
 
-	local solidLayers = c.cpp:GetLayersWithProperty("_SOLID", true)
+	local map = CPP.interface:GetMap()
+	local solidLayers = c.cpp:GetLayersWithProperty(map, "_SOLID", true)
 	local layerCount = solidLayers:size()
 	for id, rect in pairs(boxRects)do
 		boxes[id] = comp:AddCollisionBox(rect)

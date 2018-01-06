@@ -10,6 +10,8 @@ function NewChangeMap(baseclass)
 		cMap.parentEID      = cMap.LEngineData.parentEID;
 		cMap.EID            = cMap.LEngineData.entityID;
 		local EID = cMap.EID
+		local state = CPP.interface:EntityGetInterface(cMap.LEngineData.stateEID)
+		cMap.state = state
 
 		cMap.spriteComp = CPP.interface:GetSpriteComponent    (EID);
 		cMap.posComp	= CPP.interface:GetPositionComponent  (EID);
@@ -66,7 +68,7 @@ function NewChangeMap(baseclass)
 	end
 
 	function cMap.Activate()
-		CPP.interface:LoadMap(cMap.map, 0)
+		cMap.state.LoadMap(cMap.map, 0)
 	end
 
 	cMap.EntityInterface = cMap.EntityInterface or {}
