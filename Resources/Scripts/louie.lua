@@ -267,7 +267,7 @@ function container.NewLouie(baseclass)
 		louie.mainSpriteRoll:SetAnimation		("Roll")
 		louie.mainSpriteRoll:SetAnimationSpeed  (1)
 		louie.mainSpriteRoll:SetRotation		(0)
-		louie.mainSpriteRoll:Render     		(false)
+		louie.mainSpriteRoll:Render				(false)
 
 		-----------------------
 		--Collision for tiles--
@@ -306,7 +306,7 @@ function container.NewLouie(baseclass)
 		louie.saveData = state.GetSaveData()
 		local coins = 0
 		if(louie.saveData:ExistsInt("Coins"))then
-			coins = louie.saveData:GetInt("Coins")	
+			coins = louie.saveData:GetInt("Coins")
 		end
 		louie.items.coinCount = coins
 	end
@@ -330,6 +330,9 @@ function container.NewLouie(baseclass)
 	end
 
 	function louie.MainUpdate()
+		if(louie.groundSpeed == 0)then
+			louie.isDecelerating = false
+		end
 		louie.saveData:SetInt("Coins", louie.items.coinCount)
 		louie.SetCollisionBoxes()
 		louie.Climb()
@@ -742,13 +745,18 @@ function container.NewLouie(baseclass)
 			movDir=1
 		end
 
+		if(louie.groundSpeed == 0)then
+			movDir = direction
+		end
+
+		louie.isDecelerating = false
+
 		--UPDATE GSPD (GROUND)
 		if(louie.tileCollision.groundTouch) then
 			if(movDir==direction) then --Add friction to the ground speed (slowing him faster) if moving against momentum
 				if(absGS<louie.c.ACCELERATION_TOP)then
 					louie.groundSpeed= louie.groundSpeed + (louie.c.ACCELERATION * direction)
 				end
-				louie.isDecelerating = false
 			else
 				louie.groundSpeed= louie.groundSpeed + (louie.c.DEACCELERATION * direction)
 				louie.isDecelerating = true
@@ -771,7 +779,6 @@ function container.NewLouie(baseclass)
 					if(absX<louie.c.ACCELERATION_TOP)then
 						louie.xspd= louie.xspd + (louie.c.ACCELERATION_AIR * direction)
 					end
-					louie.isDecelerating = false
 				else
 					louie.xspd= louie.xspd + ((louie.c.ACCELERATION_AIR + louie.c.FRICTION_AIR) * direction)
 					louie.isDecelerating = true

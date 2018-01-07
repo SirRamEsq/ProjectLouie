@@ -178,6 +178,9 @@ end
 
 function c.SetWidthHeight(w, h)
 	--louie is 18,32
+	--zero counts as a pixel
+	w = w-1
+	h = h-1
 	c.WIDTH=w
 	c.HEIGHT=h
 	c.coordinates.GROUND_R_X_OFFSET		=  w-2
@@ -271,18 +274,18 @@ end
 
 function c.Update(xspd, yspd)
 	if(c.groundTouch==true)then
-		c.footHeightValue=math.floor(yspd+0.5+c.FEET_OFFSET+math.abs(xspd))+2
+		c.footHeightValue=math.floor(yspd+0.5+c.FEET_OFFSET+math.abs(xspd))+1
 	else
 		c.footHeightValue=math.floor(yspd + 0.5 + c.FEET_OFFSET)+1
 	end
 
 	local boxID = c.boxID
 	local boxShapes = c.boxRect
-	boxShapes[boxID.TILE_DOWN_R].h	= c.footHeightValue
-	boxShapes[boxID.TILE_DOWN_L].h	= c.footHeightValue
-	boxShapes[boxID.TILE_LEFT].w	= math.floor(xspd - 0.5)
+	boxShapes[boxID.TILE_DOWN_R].h	= c.footHeightValue 
+	boxShapes[boxID.TILE_DOWN_L].h	= c.footHeightValue 
+	boxShapes[boxID.TILE_LEFT].w	= math.floor(xspd + 0.5)
 	boxShapes[boxID.TILE_RIGHT].w	= math.floor(xspd + 0.5)
-	boxShapes[boxID.TILE_LEFT_SHORT].w	= math.floor(xspd - 0.5)
+	boxShapes[boxID.TILE_LEFT_SHORT].w	= math.floor(xspd + 0.5)
 	boxShapes[boxID.TILE_RIGHT_SHORT].w		= math.floor(xspd + 0.5)
 	boxShapes[boxID.TILE_UP].h		= math.floor(yspd - 2.5)
 
@@ -361,7 +364,7 @@ function c.OnTileCollision(packet)
 		end
 
 		--Update position
-		newPosition=CPP.Coord2df(xval, ( (ty+1) *16 ) - c.HEIGHT - HMAPheight)
+		newPosition=CPP.Coord2df(xval,( (ty+1) *16 ) - c.HEIGHT - HMAPheight - 1)
 
 		--Update variables
 		c.frameProperties.lowestAngle=math.abs(thisAngleSigned)
