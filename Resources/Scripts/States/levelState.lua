@@ -33,6 +33,15 @@ function container.NewState(baseclass)
 		CPP.interface:LoadMap(state.worldMapName, 0)
 	end
 
+	function state.PlayEvent(event)
+		local activeEntities = CPP.interface:GetActiveEntities()
+		CPP.interface:Deactivate(activeEntities)
+		local eventFinishCallback = function()
+			CPP.interface.Activate(activeEntities)
+		end
+		event.Play(eventFinishCallback)
+	end
+
 	function state.OnMapLoad(map)
 		local layers = CPP.interface:GetLayersWithProperty(map, "_SOLID", true)
 		local layerCount = layers:size()
