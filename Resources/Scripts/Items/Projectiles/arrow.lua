@@ -108,7 +108,7 @@ function arrow.Update()
 	if arrow.totalDistance > (1000) then arrow.CPPInterface:EntityDelete(arrow.EID); end
 	if arrow.time > (160) then arrow.CPPInterface:EntityDelete(arrow.EID); end
 
-	arrow.updateVec= CPP.Coord2df(arrow.MAX_SPEED_X * arrow.DIRECTION,0);
+	arrow.updateVec= CPP.Vec2(arrow.MAX_SPEED_X * arrow.DIRECTION,0);
 	if arrow.updateVec.x < 0 then arrow.mySpriteComp:SetScalingX(arrow.mySpriteID, -1) else arrow.mySpriteComp:SetScalingX(arrow.mySpriteID, 1) end
 
 	arrow.myPositionComp:SetMovement(arrow.updateVec);

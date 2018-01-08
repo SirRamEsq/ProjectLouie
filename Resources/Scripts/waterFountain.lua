@@ -50,21 +50,21 @@ function NewFountain(baseclass)
 
 		water.particleCreator = water.myParticleComp:AddParticleCreator(0, water.particleLifetime);
 
-		local particlePositionMin = CPP.Coord2df(-2, -1);
-		local particlePositionMax = CPP.Coord2df( 2,	1);
+		local particlePositionMin = CPP.Vec2(-2, -1);
+		local particlePositionMax = CPP.Vec2( 2,	1);
 
-		local particleVelocityMin = CPP.Coord2df(-0.25,-6.25);
-		local particleVelocityMax = CPP.Coord2df( 0.25,-5.75);
+		local particleVelocityMin = CPP.Vec2(-0.25,-6.25);
+		local particleVelocityMax = CPP.Vec2( 0.25,-5.75);
 
 
-		water.particleVelocitySuperMin = CPP.Coord2df(-0.25,-7.25);
-		water.particleVelocitySuperMax = CPP.Coord2df( 0.25,-6.75);
+		water.particleVelocitySuperMin = CPP.Vec2(-0.25,-7.25);
+		water.particleVelocitySuperMax = CPP.Vec2( 0.25,-6.75);
 
-		--local particleVelocityMin = CPP.Coord2df(-0.20,-1);
-		--local particleVelocityMax = CPP.Coord2df( 0.20, 0);
+		--local particleVelocityMin = CPP.Vec2(-0.20,-1);
+		--local particleVelocityMax = CPP.Vec2( 0.20, 0);
 
-		local particleAccelMin= CPP.Coord2df(-0.0025, 0.08);
-		local particleAccelMax= CPP.Coord2df( 0.0025, 0.08);
+		local particleAccelMin= CPP.Vec2(-0.0025, 0.08);
+		local particleAccelMax= CPP.Vec2( 0.0025, 0.08);
 
 		local particleShaderCode= "vec4 luaOut=vec4(fragmentColor.rgb, dotProductUV);\n"
 

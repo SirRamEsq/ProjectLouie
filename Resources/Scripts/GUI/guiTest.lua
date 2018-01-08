@@ -34,10 +34,10 @@ function container.NewGui(baseclass)
 		local defaultButtonSizeW = 128
 		local defaultButtonSizeH = 32
 
-		gui.defaultWindowSize =	CPP.Coord2df(defaultWindowSizeW, defaultWindowSizeH)
-		gui.defaultWindowPos =	CPP.Coord2df(defaultWindowPosX, defaultWindowPosY)
-		gui.defaultButtonSize = CPP.Coord2df(defaultButtonSizeW, defaultButtonSizeH)
-		gui.winSize = CPP.Coord2df(0,0)
+		gui.defaultWindowSize =	CPP.Vec2(defaultWindowSizeW, defaultWindowSizeH)
+		gui.defaultWindowPos =	CPP.Vec2(defaultWindowPosX, defaultWindowPosY)
+		gui.defaultButtonSize = CPP.Vec2(defaultButtonSizeW, defaultButtonSizeH)
+		gui.winSize = CPP.Vec2(0,0)
 
 		gui.winName = "TEST1"
 
@@ -82,16 +82,16 @@ function container.NewGui(baseclass)
 
 		gui.particleCreator = gui.myParticleComp:AddParticleCreator(0, gui.particleLifetime);
 
-		local particlePositionMin = CPP.Coord2df(xPos-8, yPos-8);
-		local particlePositionMax = CPP.Coord2df(xPos+8, yPos+8);
+		local particlePositionMin = CPP.Vec2(xPos-8, yPos-8);
+		local particlePositionMax = CPP.Vec2(xPos+8, yPos+8);
 
-		--local particleVelocityMin = CPP.Coord2df(-0.25, -0.25);
-		--local particleVelocityMax = CPP.Coord2df(0.75,  0.25);
-		local particleVelocityMin = CPP.Coord2df(-0.01, -0.01);
-		local particleVelocityMax = CPP.Coord2df( 0.01,  0.01);
+		--local particleVelocityMin = CPP.Vec2(-0.25, -0.25);
+		--local particleVelocityMax = CPP.Vec2(0.75,  0.25);
+		local particleVelocityMin = CPP.Vec2(-0.01, -0.01);
+		local particleVelocityMax = CPP.Vec2( 0.01,  0.01);
 
-		local particleAccelMin= CPP.Coord2df(-0.0025, 0.01);
-		local particleAccelMax= CPP.Coord2df( 0.0025, 0.01);
+		local particleAccelMin= CPP.Vec2(-0.0025, 0.01);
+		local particleAccelMax= CPP.Vec2( 0.0025, 0.01);
 
 		gui.particleCreator:SetPosition(particlePositionMin, particlePositionMax);
 		gui.particleCreator:SetVelocity(particleVelocityMin, particleVelocityMax);
@@ -108,7 +108,7 @@ function container.NewGui(baseclass)
 		--gui.particleCreator:SetAnimation(gui.animation)
 		--gui.particleCreator:SetAnimationFrame(0)
 		--gui.particleCreator:SetUsePoint(true)
-		--gui.particleCreator:SetPoint(CPP.Coord2df(xPos,yPos+8))
+		--gui.particleCreator:SetPoint(CPP.Vec2(xPos,yPos+8))
 		--gui.particleCreator:SetPointIntensity(50)
 		gui.particleCreator:SetRandomUV(false)
 		gui.particleCreator:SetWarpQuads(false)
@@ -126,17 +126,17 @@ function container.NewGui(baseclass)
 		local windowFlags = imGuiFlags.NoTitleBar + imGuiFlags.NoResize + imGuiFlags.NoMove + imGuiFlags.AlwaysAutoResize
 		local remap = false;
 		if(gui.noBG == false)then
-			CPP.ImGui.PushStyleColorWindowBG(CPP.Color4f(0.2, 0.2, 0.2, 1))
+			CPP.ImGui.PushStyleColorWindowBG(CPP.Color(0.2, 0.2, 0.2, 1))
 		else
-			CPP.ImGui.PushStyleColorWindowBG(CPP.Color4f(0,0,0, 0))
+			CPP.ImGui.PushStyleColorWindowBG(CPP.Color(0,0,0, 0))
 		end
 		--Sets ProgressBar BG
-		CPP.ImGui.PushStyleColorFrameBG(CPP.Color4f(0, 0.3, 0.3, 1))
+		CPP.ImGui.PushStyleColorFrameBG(CPP.Color(0, 0.3, 0.3, 1))
 		local progressBarFill = gui.frameCounter /gui.frameCounterMax
-		CPP.ImGui.PushStyleColorProgressBarFilled(CPP.Color4f(1 - progressBarFill, progressBarFill, 0, 1))
-		CPP.ImGui.PushStyleColorButton(CPP.Color4f(0, 0, 0.3, 1))
-		CPP.ImGui.PushStyleColorButtonActive(CPP.Color4f(0, 0.3, 0, 1))
-		CPP.ImGui.PushStyleColorButtonHovered(CPP.Color4f(0, 0.6, 0.6, 1))
+		CPP.ImGui.PushStyleColorProgressBarFilled(CPP.Color(1 - progressBarFill, progressBarFill, 0, 1))
+		CPP.ImGui.PushStyleColorButton(CPP.Color(0, 0, 0.3, 1))
+		CPP.ImGui.PushStyleColorButtonActive(CPP.Color(0, 0.3, 0, 1))
+		CPP.ImGui.PushStyleColorButtonHovered(CPP.Color(0, 0.6, 0.6, 1))
 
 		--CPP.ImGui.SetNextWindowSize(gui.defaultWindowSize, 0)
 		--CPP.ImGui.SetNextWindowPos(gui.defaultWindowPos, 0)
@@ -162,7 +162,7 @@ function container.NewGui(baseclass)
 		local spriteButtonPress = CPP.ImGui.SpriteButton(gui.spriteRSC, "test", 0)
 
 		CPP.ImGui.Text("Animation ProgressBar")
-		CPP.ImGui.ProgressBar(progressBarFill, CPP.Coord2df(128, 16))
+		CPP.ImGui.ProgressBar(progressBarFill, CPP.Vec2(128, 16))
 		CPP.ImGui.SameLine()
 		CPP.ImGui.Text("-_-")
 
@@ -204,11 +204,11 @@ function container.NewGui(baseclass)
 
 
 		--Center Window
-		gui.currentPosition = CPP.Coord2df(( resolution.x/2) - (gui.winSize.x/2), gui.translateY)
+		gui.currentPosition = CPP.Vec2(( resolution.x/2) - (gui.winSize.x/2), gui.translateY)
 
 		--Left Align Window
 		if(CPP.interface:GetMouseButtonMiddle())then
-			gui.currentPosition = CPP.Coord2df(0, gui.translateY)
+			gui.currentPosition = CPP.Vec2(0, gui.translateY)
 			if(gui.simulateKeyPress == false) then
 				CPP.interface:SimulateKeyPress("specialLuaKey")
 				CPP.interface:SimulateKeyRelease("specialLuaKey")
@@ -221,7 +221,7 @@ function container.NewGui(baseclass)
 
 		--Right Align Window
 		if(CPP.interface:GetMouseButtonRight())then
-			gui.currentPosition = CPP.Coord2df(( resolution.x) - (gui.winSize.x), gui.translateY)
+			gui.currentPosition = CPP.Vec2(( resolution.x) - (gui.winSize.x), gui.translateY)
 		end
 
 		gui.translateY = gui.translateY - (CPP.interface:GetMouseWheel()*5)
@@ -231,12 +231,12 @@ function container.NewGui(baseclass)
 			local windowFlags2 = imGuiFlags.NoTitleBar + imGuiFlags.NoMove + imGuiFlags.NoResize + imGuiFlags.AlwaysAutoResize
 			windowFlags2 = windowFlags2 + imGuiFlags.AlwaysAutoResize
 			local popFont = CPP.ImGui.PushFont(gui.font, gui.fontSize)
-			local newPos = CPP.Coord2df(0,0)
+			local newPos = CPP.Vec2(0,0)
 
 			CPP.ImGui.SetNextWindowPos(newPos, 0)
 			CPP.ImGui.SetNextWindowSize(resolution, 0)
 			CPP.ImGui.SetNextWindowFocus();
-			CPP.ImGui.PushStyleColorWindowBG(CPP.Color4f(0, 0.3, 0.3, 1))
+			CPP.ImGui.PushStyleColorWindowBG(CPP.Color(0, 0.3, 0.3, 1))
 			CPP.ImGui.BeginFlags("Input", windowFlags2)
 			CPP.ImGui.Text("Press Key")
 			CPP.ImGui.End()

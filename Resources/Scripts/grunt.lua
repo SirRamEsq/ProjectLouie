@@ -107,7 +107,7 @@ function NewGrunt(baseclass)
 			grunt.xSpeed = -grunt.xSpeedMax;
 		end
 
-		grunt.updateVec= CPP.Coord2df(grunt.xSpeed, grunt.ySpeed)
+		grunt.updateVec= CPP.Vec2(grunt.xSpeed, grunt.ySpeed)
 		grunt.myPositionComp:SetMovement(grunt.updateVec);
 		grunt.collision.Update(grunt.xSpeed, grunt.ySpeed);
 	end

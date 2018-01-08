@@ -12,7 +12,7 @@ function container.NewMain(baseclass)
 		main.parent		= main.LEngineData.parent;
 		main.EID		= main.LEngineData.entityID;
 
-		main.defaultWindowPos = CPP.Coord2df(450, 300)
+		main.defaultWindowPos = CPP.Vec2(450, 300)
 		local guiName = ""
 		local guiScript = "GUI/guiTest.lua"
 		main.childEID = CPP.interface:EntityNew(guiScript, 0,0, main.depth, main.EID, guiScript, {})
@@ -56,7 +56,7 @@ function container.NewMain(baseclass)
 		CPP.ImGui.End()
 
 		--Center Window
-		main.currentPosition = CPP.Coord2df(( resolution.x/2) - (main.winSize.x/2), 0)
+		main.currentPosition = CPP.Vec2(( resolution.x/2) - (main.winSize.x/2), 0)
 
 		CPP.ImGui.SetWindowPos(main.winName, main.currentPosition, 0)
 

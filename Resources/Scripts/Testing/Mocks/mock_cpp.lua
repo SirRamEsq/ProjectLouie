@@ -31,7 +31,7 @@ function mockCPP()
 		return rect
 	end
 
-	function mock.Coord2df(x,y)
+	function mock.Vec2(x,y)
 		local coord = {}
 		coord.x=x
 		coord.y=y

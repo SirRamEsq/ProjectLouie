@@ -71,7 +71,7 @@ function NewFallingPlatform(baseclass)
 		platform.timing:SetAlarm(platform.c.ALARM_OFFSET, platform.c.OFFSET_TIME, platform.UpdateSpriteOffset, true) --repeat
 		platform.timing:GetAlarm(platform.c.ALARM):Disable();
 
-		platform.movement= CPP.Coord2df(0, 0)
+		platform.movement= CPP.Vec2(0, 0)
 
 		local worldPos = platform.CompPosition:GetPositionWorld()
 		platform.initialCoordinates.x = worldPos.x
@@ -101,7 +101,7 @@ function NewFallingPlatform(baseclass)
 			platform.Respawn()
 		end
 
-		--platform.movement= CPP.Coord2df(platform.xspd, platform.yspd)
+		--platform.movement= CPP.Vec2(platform.xspd, platform.yspd)
 		--platform.CompPosition:SetMovement(platform.movement);
 		platform.movement = platform.CompPosition:GetMovement();
 		platform.collision.Update(platform.movement.x, platform.movement.y);

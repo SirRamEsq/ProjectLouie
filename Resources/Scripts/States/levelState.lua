@@ -15,8 +15,8 @@ function container.NewState(baseclass)
 		state.save = save
 
 		--CPP.interface:LoadMap("Hub.tmx", 0)
-		--state.LoadMap("Hub.tmx")
-		state.LoadWorldMap()
+		state.LoadMap("Hub.tmx")
+		--state.LoadWorldMap()
 	end
 
 	function state.Update()

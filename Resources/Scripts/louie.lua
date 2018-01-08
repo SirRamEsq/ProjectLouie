@@ -927,7 +927,7 @@ function container.NewLouie(baseclass)
 			platformVelocityX=0
 			platformVelocityY=0
 		end
-		updateVec=CPP.Coord2df((louie.xspd*speedDampenX), (louie.yspd*speedDampenY))
+		updateVec=CPP.Vec2((louie.xspd*speedDampenX), (louie.yspd*speedDampenY))
 		louie.CompPosition:SetMovement(updateVec)
 	end
 
@@ -945,8 +945,8 @@ function container.NewLouie(baseclass)
 		local windowFlags = imGuiFlags.NoTitleBar + imGuiFlags.NoResize + imGuiFlags.NoMove + imGuiFlags.AlwaysAutoResize
 
 		--no background
-		CPP.ImGui.PushStyleColorWindowBG(CPP.Color4f(0,0,0, 0))
-		CPP.ImGui.PushStyleColorText(CPP.Color4f(.8,.2,.2,2))
+		CPP.ImGui.PushStyleColorWindowBG(CPP.Color(0,0,0, 0))
+		CPP.ImGui.PushStyleColorText(CPP.Color(.8,.2,.2,2))
 		louie.guiName = "louieGUI"
 
 		CPP.ImGui.BeginFlags(louie.guiName, windowFlags)
@@ -958,7 +958,7 @@ function container.NewLouie(baseclass)
 		CPP.ImGui.PopStyleColor(2)
 
 		--Center Window
-		local guiPosition = CPP.Coord2df(( resolution.x/2) - (winSize.x/2), 0)
+		local guiPosition = CPP.Vec2(( resolution.x/2) - (winSize.x/2), 0)
 		CPP.ImGui.SetWindowPos(louie.guiName, guiPosition, 0)
 
 		if(popFont)then
@@ -990,7 +990,7 @@ function container.NewLouie(baseclass)
 
 	function louie.LandOnGround(ycoordinate, angleGround)
 		--Update position
-		newPosition= CPP.Coord2df(0,ycoordinate)
+		newPosition= CPP.Vec2(0,ycoordinate)
 
 		newPosition= louie.CompPosition:TranslateWorldToLocal(newPosition)
 

@@ -53,14 +53,14 @@ function container.NewBoxBreak(baseclass)
 
 		box.particleCreator = box.myParticleComp:AddParticleCreator(5, box.particleLifetime);
 
-		local particlePositionMin = CPP.Coord2df(-8, -8);
-		local particlePositionMax = CPP.Coord2df( 8,  8);
+		local particlePositionMin = CPP.Vec2(-8, -8);
+		local particlePositionMax = CPP.Vec2( 8,  8);
 
-		local particleVelocityMin = CPP.Coord2df(-2.25, -0.25);
-		local particleVelocityMax = CPP.Coord2df(2.75,  0.25);
+		local particleVelocityMin = CPP.Vec2(-2.25, -0.25);
+		local particleVelocityMax = CPP.Vec2(2.75,  0.25);
 
-		local particleAccelMin= CPP.Coord2df(-0.0025, 0.01);
-		local particleAccelMax= CPP.Coord2df( 0.0025, 0.01);
+		local particleAccelMin= CPP.Vec2(-0.0025, 0.01);
+		local particleAccelMax= CPP.Vec2( 0.0025, 0.01);
 
 		local particleShaderCode= "vec4 luaOut=vec4(fragmentColor.rgb, dotProductUV);\n"
 
@@ -81,7 +81,7 @@ function container.NewBoxBreak(baseclass)
 		box.particleCreator:SetAnimationFrame(0)
 		box.particleCreator:SetUsePoint(true)
 		box.particleCreator:SetPointIntensity(15)
-		box.particleCreator:SetPoint(CPP.Coord2df(4,4))
+		box.particleCreator:SetPoint(CPP.Vec2(4,4))
 		box.particleCreator:SetRandomUV(true)
 		box.particleCreator:SetWarpQuads(true)
 		

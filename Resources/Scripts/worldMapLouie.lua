@@ -53,7 +53,7 @@ container.New = function(baseclass)
 	local Update = function()
 		class.HandleInput()
 		class.Animate()
-		local updateVec = CPP.Coord2df(class.xspd, class.yspd)
+		local updateVec = CPP.Vec2(class.xspd, class.yspd)
 		class.CompPosition:SetMovement(updateVec)
 	end
 

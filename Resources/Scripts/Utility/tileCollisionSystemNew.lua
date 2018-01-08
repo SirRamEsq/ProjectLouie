@@ -364,7 +364,7 @@ function c.OnTileCollision(packet)
 		end
 
 		--Update position
-		newPosition=CPP.Coord2df(xval,( (ty+1) *16 ) - c.HEIGHT - HMAPheight - 1)
+		newPosition=CPP.Vec2(xval,( (ty+1) *16 ) - c.HEIGHT - HMAPheight - 1)
 
 		--Update variables
 		c.frameProperties.lowestAngle=math.abs(thisAngleSigned)
@@ -382,7 +382,7 @@ function c.OnTileCollision(packet)
 		end
 		c.rightWall = true
 		if((hspd>=0) or ((c.groundTouch==false) and (hspd==0)))  then
-			newPosition=CPP.Coord2df( (tx*c.TILEWIDTH)-c.WIDTH, yval)
+			newPosition=CPP.Vec2( (tx*c.TILEWIDTH)-c.WIDTH, yval)
 
 			c.previous.tileRight=true
 			--The top c box won't try to collide with this tile for the rest of the frame
@@ -403,7 +403,7 @@ function c.OnTileCollision(packet)
 		c.leftWall = true
 		if((hspd<=0) or ((c.groundTouch==false) and (hspd==0))) then
 			--Subtract one because (tx+1) pushes one pixel past the actual tile colided with
-			newPosition=CPP.Coord2df(((tx+1)*c.TILEWIDTH)-1, yval)
+			newPosition=CPP.Vec2(((tx+1)*c.TILEWIDTH)-1, yval)
 
 			c.previous.tileLeft=true
 			--The top c box won't try to collide with this tile for the rest of the frame
@@ -422,7 +422,7 @@ function c.OnTileCollision(packet)
 		if(usesHMaps)then
 			return
 		end
-		newPosition=CPP.Coord2df(xval, ((ty+1)*c.TILEHEIGHT)-1)
+		newPosition=CPP.Vec2(xval, ((ty+1)*c.TILEHEIGHT)-1)
 
 		c.previous.tileUp		=true
 

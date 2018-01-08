@@ -29,7 +29,7 @@ function NewCamera(baseclass)
 		camera.depth		= camera.LEngineData.depth;
 		camera.parentEID	= camera.LEngineData.parentEID;
 		camera.EID			= camera.LEngineData.entityID;
-		camera.pos			= CPP.Coord2df(camera.localDefault.x,camera.localDefault.y);
+		camera.pos			= CPP.Vec2(camera.localDefault.x,camera.localDefault.y);
 
 		camera.myPositionComp=CPP.interface:GetPositionComponent(camera.EID);
 		camera.myCameraComp	= CPP.interface:GetCameraComponent (camera.EID);
@@ -60,7 +60,7 @@ function NewCamera(baseclass)
 	function camera.Update()
 		if(camera.blockFollow) then
 			local parentPos = CPP.interface:EntityGetPositionWorld(camera.parentEID):Round()
-			local newPos = CPP.Coord2df(0,0);
+			local newPos = CPP.Vec2(0,0);
 
 			newPos.x = (math.floor(parentPos.x/camera.w) * camera.w)
 			newPos.y = (math.floor(parentPos.y/camera.h) * camera.h)
@@ -68,7 +68,7 @@ function NewCamera(baseclass)
 			camera.myPositionComp:SetPositionLocal(newPos)
 		else
 			local parentPos = CPP.interface:EntityGetPositionWorld(camera.parentEID):Round()
-			local newPos = CPP.Coord2df(0,0);
+			local newPos = CPP.Vec2(0,0);
 			--center camera on parent
 			newPos.x = parentPos.x + camera.localDefault.x
 			newPos.y = parentPos.y + camera.localDefault.y

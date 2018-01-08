@@ -61,14 +61,14 @@ function container.NewFallingHat(baseclass)
 
 		hat.particleCreator = hat.CompParticle:AddParticleCreator(0, hat.particleLifetime);
 
-		local particlePositionMin = CPP.Coord2df(-8, -8);
-		local particlePositionMax = CPP.Coord2df( 8,  8);
+		local particlePositionMin = CPP.Vec2(-8, -8);
+		local particlePositionMax = CPP.Vec2( 8,  8);
 
-		local particleVelocityMin = CPP.Coord2df(-0.25, -0.25);
-		local particleVelocityMax = CPP.Coord2df(0.25,  -1.00);
+		local particleVelocityMin = CPP.Vec2(-0.25, -0.25);
+		local particleVelocityMax = CPP.Vec2(0.25,  -1.00);
 
-		local particleAccelMin= CPP.Coord2df(-0.0025, 0.01);
-		local particleAccelMax= CPP.Coord2df( 0.0025, 0.01);
+		local particleAccelMin= CPP.Vec2(-0.0025, 0.01);
+		local particleAccelMax= CPP.Vec2( 0.0025, 0.01);
 
 		hat.particleCreator:SetPosition(particlePositionMin, particlePositionMax);
 		hat.particleCreator:SetVelocity(particleVelocityMin, particleVelocityMax);
@@ -82,8 +82,8 @@ function container.NewFallingHat(baseclass)
 		hat.particleCreator:SetShape(4);
 		hat.particleCreator:SetEffect(2);
 		hat.particleCreator:Start();
-		hat.CompPosition:SetMovement(CPP.Coord2df(hat.c.VELOCITY_X * hat.dir, hat.c.VELOCITY_Y));
-		hat.CompPosition:SetAcceleration(CPP.Coord2df(0,hat.c.GRAVITY));
+		hat.CompPosition:SetMovement(CPP.Vec2(hat.c.VELOCITY_X * hat.dir, hat.c.VELOCITY_Y));
+		hat.CompPosition:SetAcceleration(CPP.Vec2(0,hat.c.GRAVITY));
 	end
 
 	function hat.Update()
