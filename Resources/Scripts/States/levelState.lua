@@ -15,7 +15,8 @@ function container.NewState(baseclass)
 		state.save = save
 
 		--CPP.interface:LoadMap("Hub.tmx", 0)
-		state.LoadMap("Hub.tmx")
+		--state.LoadMap("Hub.tmx")
+		state.LoadWorldMap()
 	end
 
 	function state.Update()
@@ -30,7 +31,12 @@ function container.NewState(baseclass)
 	end
 
 	function state.LoadWorldMap()
-		CPP.interface:LoadMap(state.worldMapName, 0)
+		local onLoad = function(map)
+			--local player = CPP.interface:EntityNewPrefab("player", 4*16 20*16, 0, 0, "worldMapLouie.xml" )
+			local playerEID = CPP.interface:EntityNew("player", 4*16, 20*16, 0, 0, "worldMapLouie.lua", {})
+			local cameraEID = CPP.interface:EntityNew("camera", 4*16, 20*16, 0, playerEID, "Camera/playerCamera.lua", {})
+		end
+		CPP.interface:LoadMap(state.worldMapName, 0, onLoad)
 	end
 
 	function state.PlayEvent(event)
@@ -51,12 +57,12 @@ function container.NewState(baseclass)
 				--map:DeleteLayer(layer)
 			end
 		end
-
 	end
 
 	function state.LoadMap(name, entranceID)
 		entranceID = entranceID or 0
 		CPP.interface:LoadMap(name, entranceID, state.OnMapLoad)
+		state.lastMap = name
 	end
 
 	state.EntityInterface = state.EntityInterface or {}
