@@ -157,14 +157,12 @@ function c.Init(w, h, eid)
 
 	local map = CPP.interface:GetMap()
 	local solidLayers = c.cpp:GetLayersWithProperty(map, "_SOLID", true)
-	local layerCount = solidLayers:size()
 	for id, rect in pairs(boxRects)do
 		boxes[id] = comp:AddCollisionBox(rect)
 		boxes[id]:SetOrder(order[id])
 		boxes[id]:CheckForTiles()
-		for i=0, layerCount - 1 do
-			local layer = solidLayers:at(i)
-			boxes[id]:CheckForLayer(layer, callbacks[id])
+		for k,v in pairs(solidLayers)do
+			boxes[id]:CheckForLayer(v, callbacks[id])
 		end
 		c.boxReverseMap[boxes[id]] = id
 	end

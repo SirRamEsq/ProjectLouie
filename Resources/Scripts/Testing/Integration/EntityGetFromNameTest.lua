@@ -32,9 +32,8 @@ function container.NewState(baseclass)
 		if not success then return end
 
 		local count = 0
-		for i=0, entities:size() - 1 do
+		for k,v in pairs(entities)do
 			count = count + 1
-			local v = entities:at(i)
 			if (state.entity1 ~= v) and (state.entity2 ~= v) and (state.entity3 ~= v) then
 				testing:Error("Returned EID '" .. tostring(v) .. "' does not match any created")
 			end
