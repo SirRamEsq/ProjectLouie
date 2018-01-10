@@ -16,24 +16,25 @@ function container.NewState(baseclass)
 
 		state.save = save
 
-		CPP.interface:LoadMap("Hub.tmx", 0)
-		--state.LoadMap("Hub.tmx")
+		--CPP.interface:LoadMap("Hub.tmx", 0)
+		state.LoadMap("Hub.tmx")
 		--state.LoadWorldMap()
 	end
 
 	function state.Update()
 		if(state.fadeIn) then
-			local frameIncrement = .001
+			local frameIncrement = .01
 			state.fadeInPercentage = state.fadeInPercentage + frameIncrement
 			if(state.fadeInPercentage > 1)then
 				state.fadeInPercentage = 1
 			end
 
-			local r = state.ambientLight.x * state.fadeInPercentage
-			local g = state.ambientLight.y * state.fadeInPercentage
-			local b = state.ambientLight.z * state.fadeInPercentage
+			local newLight = CPP.Vec3(0,0,0)
+			newLight.x = state.ambientLight.x * state.fadeInPercentage
+			newLight.y = state.ambientLight.y * state.fadeInPercentage
+			newLight.z = state.ambientLight.z * state.fadeInPercentage
+			CPP.interface.light:SetAmbient(newLight)
 
-			CPP.interface:SetAmbientLight(r, g, b)
 			if(state.fadeInPercentage == 1)then
 				--done fading in
 				state.fadeIn = false
@@ -41,17 +42,18 @@ function container.NewState(baseclass)
 		end
 
 		if(state.fadeOut) then
-			local frameDecrement = .001
+			local frameDecrement = .01
 			state.fadeOutPercentage = state.fadeOutPercentage - frameDecrement
 			if(state.fadeOutPercentage < 0)then
 				state.fadeOutPercentage = 0
 			end
 
-			local r = state.ambientLight.x * state.fadeOutPercentage
-			local g = state.ambientLight.y * state.fadeOutPercentage
-			local b = state.ambientLight.z * state.fadeOutPercentage
+			local newLight = CPP.Vec3(0,0,0)
+			newLight.x = state.ambientLight.x * state.fadeOutPercentage
+			newLight.y = state.ambientLight.y * state.fadeOutPercentage
+			newLight.z = state.ambientLight.z * state.fadeOutPercentage
+			CPP.interface.light:SetAmbient(newLight)
 
-			CPP.interface:SetAmbientLight(r, g, b)
 			if(state.fadeOutPercentage == 0)then
 				--done fading in
 				state.fadeOut = false
@@ -79,7 +81,7 @@ function container.NewState(baseclass)
 	end
 
 	function state.PlayEvent(event)
-		local activeEntities = CPP.interface:GetActiveEntities()
+		local activeEntities = CPP.interface.entity:GetActiveEntities()
 		CPP.interface:Deactivate(activeEntities)
 		local eventFinishCallback = function()
 			CPP.interface.Activate(activeEntities)
@@ -88,25 +90,20 @@ function container.NewState(baseclass)
 	end
 
 	function state.OnMapLoad(map)
-		local layers = CPP.interface:GetLayersWithProperty(map, "_SOLID", true)
-		for k,v in pairs(layers) do
-			if(v ~= nil)then
-				--map:DeleteLayer(v)
-			end
-		end
 		state.fadeInPercentage = 0.0
-		state.ambientLight = map.GetAmbientLight()
+		state.ambientLight = map:GetAmbientLight()
+		local al = state.ambientLight
 		state.fadeIn = true
 	end
 
 	function state.LoadMap(name, entranceID)
-		---local entMan = CPP.interface:entityManager
-		---entMan:DeactivateEntitiesExcept({state.EID})
+		local entMan = CPP.interface.entity
+		entMan:DeactivateAllExcept({state.EID})
 		state.newMapName = name
-		state.newMapEntranceID = entranceID
+		state.newMapEntranceID = entranceID or 0
 		state.fadeOutPercentage = 1.0
-		--state.ambientLight = CPP.interface:GetAmbientLight()
-		--state.fadeOut = true
+		state.ambientLight = CPP.interface.light:GetAmbient()
+		state.fadeOut = true
 	end
 
 	state.EntityInterface = state.EntityInterface or {}
