@@ -59,7 +59,7 @@ function NewCamera(baseclass)
 
 	function camera.Update()
 		if(camera.blockFollow) then
-			local parentPos = CPP.interface:EntityGetPositionWorld(camera.parentEID):Round()
+			local parentPos = CPP.interface.position:GetWorld(camera.parentEID):Round()
 			local newPos = CPP.Vec2(0,0);
 
 			newPos.x = (math.floor(parentPos.x/camera.w) * camera.w)
@@ -67,7 +67,7 @@ function NewCamera(baseclass)
 
 			camera.myPositionComp:SetPositionLocal(newPos)
 		else
-			local parentPos = CPP.interface:EntityGetPositionWorld(camera.parentEID):Round()
+			local parentPos = CPP.interface.position:GetWorld(camera.parentEID):Round()
 			local newPos = CPP.Vec2(0,0);
 			--center camera on parent
 			newPos.x = parentPos.x + camera.localDefault.x

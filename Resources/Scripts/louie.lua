@@ -1016,8 +1016,8 @@ function container.NewLouie(baseclass)
 		if(solid==true)then
 			if(bounce==true)then
 				if(louie.yspd >= bounceThreshold)then
-					local thisPos = CPP.interface:EntityGetPositionWorld(louie.EID)
-					local otherPos = CPP.interface:EntityGetPositionWorld(entityID)
+					local thisPos = CPP.interface.position:GetWorld(louie.EID)
+					local otherPos = CPP.interface.position:GetWorld(entityID)
 					if((thisPos.y+louie.c.HEIGHT) <= (otherPos.y + leeway) )then
 						louie.yspd = louie.yspd * -.9
 						otherEntity.Attack(1)
@@ -1025,8 +1025,8 @@ function container.NewLouie(baseclass)
 				end
 			end
 			if(louie.yspd>=0)then
-				local thisPos = CPP.interface:EntityGetPositionWorld(louie.EID)
-				local otherPos = CPP.interface:EntityGetPositionWorld(entityID)
+				local thisPos = CPP.interface.position:GetWorld(louie.EID)
+				local otherPos = CPP.interface.position:GetWorld(entityID)
 				if((thisPos.y+louie.c.HEIGHT) <= (otherPos.y + leeway) )then
 					louie.tileCollision.groundTouch=true
 					louie.LandOnGround(otherPos.y-louie.c.HEIGHT, 0)
