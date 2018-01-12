@@ -8,14 +8,27 @@ function container.NewMain(baseclass)
 	local main = baseclass or {}
 
 	function main.Initialize()
-		main.depth		= main.LEngineData.depth;
-		main.parent		= main.LEngineData.parent;
-		main.EID		= main.LEngineData.entityID;
+		main.depth		= main.LEngineData.depth
+		main.parent		= main.LEngineData.parent
+		main.EID		= main.LEngineData.entityID
+		local c = CPP.interface
+
+		main.depth = c:GetSpriteComponent(main.EID):GetDepth()
 
 		main.defaultWindowPos = CPP.Vec2(450, 300)
-		local guiName = ""
+		local guiName = "guiSub"
 		local guiScript = "GUI/guiTest.lua"
-		main.childEID = CPP.interface:EntityNew(guiScript, 0,0, main.depth, main.EID, guiScript, {})
+		--main.childEID = CPP.interface:EntityNew(guiScript, 0,0, main.depth, main.EID, guiScript, {})
+		main.childEID = c.entity:New()
+		c.entity:MapNameToEID(main.childEID, guiName)
+		main.childPos = c:GetPositionComponent(main.childEID)
+		main.childSpr = c:GetSpriteComponent(main.childEID)
+
+		main.childSpr:SetDepth(main.depth)
+		main.childPos:SetPositionWorld(CPP.Vec2(0,0))
+
+		c.script:CreateEntity(main.childEID, {guiScript}, {})
+
 		--main.font = "extra_fonts/Roboto-Medium.ttf"
 		main.font = "ebFonts/wisdom.ttf"
 		main.fontSize = 30

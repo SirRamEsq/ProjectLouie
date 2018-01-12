@@ -8,26 +8,15 @@ container.NewLEngine = function ()
     _DESCRIPTION  = "Module that the LEngine populates with data and sends to each instance of a script component",
 
 	debugMode	  = false,
-    depth         = 0,
-	--parent EID
-    parentEID      = 0,
 	--This entity's ID
     entityID      = 0,
-	--This entity's name
-    name          = "",
-	--This entity's type
-    objType       = "",
 
     InitializationTable = {} --This table holds all the data that is set at instantiation
   }
 
   --This function is run before anything else is run in the script
-  LEngine.Initialize= function (id, name, objType, depth, parent, stateEID, debug)
-    LEngine.parentEID  =parent;
-    LEngine.depth      =depth;
+  LEngine.Initialize= function (id, stateEID, debug)
     LEngine.entityID   =id;
-    LEngine.objType    =objType;
-    LEngine.name       =name;
 	LEngine.stateEID = stateEID
 	LEngine.debugMode 	= debug or false;
 

@@ -26,9 +26,8 @@ function NewCamera(baseclass)
 		-----------------------
 		--C++ Interface setup--
 		-----------------------
-		camera.depth		= camera.LEngineData.depth;
-		camera.parentEID	= camera.LEngineData.parentEID;
 		camera.EID			= camera.LEngineData.entityID;
+		camera.parentEID 	= camera.LEngineData.InitializationTable["_PARENT"] or 0
 		camera.pos			= CPP.Vec2(camera.localDefault.x,camera.localDefault.y);
 
 		camera.myPositionComp=CPP.interface:GetPositionComponent(camera.EID);
@@ -40,14 +39,11 @@ function NewCamera(baseclass)
 		--This will ensure that the parent script will be updated before this script
 		--Therefore, the entity the camera is following will move before the camera does
 		--This will ensure that the camera will always follow an up-to-date position and not lag behind
-		CPP.interface:SetParent(camera.EID, camera.parentEID)
+		CPP.interface.position:SetParent(camera.EID, camera.parentEID)
 
 		--instead of the component managing the position, the camera will manage on its own
 		--camera.myPositionComp:SetParent(0);
 		--camera.myPositionComp:SetPositionLocal(camera.pos);
-
-		--recieve parent's events
-		CPP.interface:EventLuaObserveEntity(camera.EID, camera.parentEID);
 
 		local map = CPP.interface:GetMap()
 		if(map == nil)then
@@ -58,6 +54,7 @@ function NewCamera(baseclass)
 	end
 
 	function camera.Update()
+		if(camera.parentEID == 0) then return end
 		if(camera.blockFollow) then
 			local parentPos = CPP.interface.position:GetWorld(camera.parentEID):Round()
 			local newPos = CPP.Vec2(0,0);

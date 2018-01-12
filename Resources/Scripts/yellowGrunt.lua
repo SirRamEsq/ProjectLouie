@@ -99,10 +99,23 @@ function NewYellowGrunt(baseclass)
 		class.arrowsFired=class.arrowsFired+1
 
 		local name = ""
-		local scriptName = "Items/Projectiles/arrow.lua"
+		local scriptTable = {"Items/Projectiles/arrow.lua"}
+		local c = CPP.interface
+		local arrowEID = c.entity:New()
+		local arrowPos = c.GetPositionComponent(arrowEID)
+		local arrowSprite = c.GetSpriteComponent(arrowEID)
+		local properties = {direction = class.DIRECTION, shooterEID = class.EID}
+
+		arrowPos:SetPositionWorld(position)
+		arrowSprite:SetDepth(class.depth)
+		c.script:CreateEntity(arrowEID, scriptTable, properties)	
+		--[[
+		c.script:CreateEntityPrefab(arrowEID, class.depth, prefabName, properties)	
+
 		entityArrow = class.CPPInterface:EntityNew(
 		name, position.x, position.y, class.depth, 0, scriptName,
 		{direction = class.DIRECTION, shooterEID = class.EID})
+		]]--
 
 		class.CPPInterface:EventLuaObserveEntity(class.EID, entityArrow)
 

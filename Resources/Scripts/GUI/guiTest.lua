@@ -19,11 +19,16 @@ function container.NewGui(baseclass)
 	end
 
 	function gui.Initialize()
-		gui.depth		= gui.LEngineData.depth;
 		gui.parent		= gui.LEngineData.parent;
 		gui.CPPInterface = CPP.interface
 		gui.EID			= gui.LEngineData.entityID;
 		local EID = gui.EID
+		gui.myPositionComp	= CPP.interface:GetPositionComponent (EID);
+		gui.myParticleComp	= CPP.interface:GetParticleComponent (EID);
+		gui.myCameraComp	= CPP.interface:GetCameraComponent (EID);
+		gui.mySpriteComp	= CPP.interface:GetSpriteComponent (EID);
+
+		gui.depth = gui.mySpriteComp:GetDepth()
 
 		local defaultWindowSizeW = 200
 		local defaultWindowSizeH = 200
@@ -59,12 +64,8 @@ function container.NewGui(baseclass)
 		gui.LoadFont()
 
 		CPP.interface:ListenForInput(gui.EID, "specialLuaKey");
-		gui.myPositionComp	= CPP.interface:GetPositionComponent (EID);
-		gui.myParticleComp	= CPP.interface:GetParticleComponent (EID);
-		gui.myCameraComp	= CPP.interface:GetCameraComponent (EID);
 		gui.sprite	 = CPP.interface:LoadSpriteResource("test.xml");
 		gui.animation = "test";
-		gui.mySpriteComp	= CPP.interface:GetSpriteComponent (EID);
 		gui.mainSprite	= gui.mySpriteComp:AddSprite(gui.sprite, gui.depth, 64, 64);
 		gui.mainSprite:SetAnimation	( "test");
 

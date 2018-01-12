@@ -180,10 +180,11 @@ function container.NewLouie(baseclass)
 		--C++ Interface setup--
 		-----------------------
 		louie.depth	= louie.LEngineData.depth
-		louie.parentEID= louie.LEngineData.parentEID
 		louie.EID	= louie.LEngineData.entityID
 		louie.name = louie.LEngineData.name
 		louie.objType = louie.LEngineData.objType
+
+		louie.parentEID= 0
 
 		--[[
 		if(louie.LEngineData.debugMode)then
@@ -923,7 +924,7 @@ function container.NewLouie(baseclass)
 		if(louie.tileCollision.groundTouch==false)then
 			louie.xspd = louie.xspd --+ louie.platformVelocityX
 			louie.yspd = louie.yspd --+ louie.platformVelocityY
-			louie.CompPosition:SetParent(louie.parentEID)
+			CPP.interface.position:SetParent(louie.EID, louie.parentEID)
 			platformVelocityX=0
 			platformVelocityY=0
 		end
@@ -1030,7 +1031,7 @@ function container.NewLouie(baseclass)
 				if((thisPos.y+louie.c.HEIGHT) <= (otherPos.y + leeway) )then
 					louie.tileCollision.groundTouch=true
 					louie.LandOnGround(otherPos.y-louie.c.HEIGHT, 0)
-					louie.CompPosition:SetParent(entityID)
+					CPP.interface.position:SetParent(louie.EID, entityID)
 
 					local vecMove = CPP.interface:EntityGetMovement(entityID)
 					louie.platformVelocityX=vecMove.x
@@ -1108,7 +1109,7 @@ function container.NewLouie(baseclass)
 		louie.angle=newAngle
 		louie.debug_tcolx=tx
 		louie.debug_tcoly=ty
-		louie.CompPosition:SetParent(louie.parentEID)
+		CPP.interface.position:SetParent(louie.EID, louie.parentEID)
 		louie.platformVelocityX=0
 		louie.platformVelocityY=0
 	end
