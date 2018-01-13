@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.12.21" orientation="orthogonal" renderorder="left-up" width="100" height="64" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#0088c7" nextobjectid="12">
+<map version="1.0" tiledversion="2017.12.21" orientation="orthogonal" renderorder="left-up" width="100" height="64" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#0088c7" nextobjectid="13">
  <tileset firstgid="1" source="TileSets/terrainGrassy.tsx"/>
  <tileset firstgid="257" source="TileSets/icons.tsx"/>
  <imagelayer name="BG1">
@@ -19263,5 +19263,6 @@
     <property name="sprite" value="vortex.xml"/>
    </properties>
   </object>
+  <object id="12" type="fallingPlatform.xml" gid="264" x="176" y="852" width="32" height="16"/>
  </objectgroup>
 </map>

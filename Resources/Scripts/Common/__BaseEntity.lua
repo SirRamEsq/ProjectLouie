@@ -49,6 +49,7 @@ function BaseEntity.new(ignoringThis)
 		Activate      = function () end,
 		IsSolid		  = function () return true;  end,
 		IsCollectable = function () return 0;  end,
+		IsPlayer = function () return false;  end,
 		CanBounce     = function () return false; end, --the 'goomba' property
 		CanGrab		  = function () return false; end,
 		--This instance being attacked, returns true if attack hit, false if not

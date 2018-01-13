@@ -3,21 +3,22 @@ container.New = function(baseclass)
 	local MOVE_SPEED = 1
 
 	class = baseclass or {}
+	class.C = class.C or {}
+	class.C.WIDTH = 16
+	class.C.HEIGHT = 16
 	class.input = require("Utility/input.lua")
 	class.xspd = 0
 	class.yspd = 0
 
 	local Init = function()
-		class.depth	= class.LEngineData.depth
-		class.parentEID= class.LEngineData.parentEID
 		class.EID	= class.LEngineData.entityID
 		class.name = class.LEngineData.name
-		class.objType = class.LEngineData.objType
 
 		local EID = class.EID
 		class.CompCollision = CPP.interface:GetCollisionComponent(EID)
 		class.CompSprite	= CPP.interface:GetSpriteComponent(EID)
 		class.CompPosition  = CPP.interface:GetPositionComponent(EID)
+		class.depth	= class.CompSprite:GetDepth()
 
 		--Input
 		class.c = class.c or {}
@@ -39,7 +40,7 @@ container.New = function(baseclass)
 
 		--Sprite
 		class.spriteRSC	 = CPP.interface:LoadSpriteResource("worldMapLouie.xml")
-		class.sprite = class.CompSprite:AddSprite(class.spriteRSC, class.depth)
+		class.sprite = class.CompSprite:AddSprite(class.spriteRSC)
 	end
 
 	function class.OnKeyDown(keyname)
@@ -94,6 +95,10 @@ container.New = function(baseclass)
 
 	table.insert(class.InitFunctions, Init)
 	table.insert(class.UpdateFunctions, Update)
+
+	class.EntityInterface = class.EntityInterface or {}
+	local ei = class.EntityInterface
+	ei.IsPlayer	= function ()		return true end
 
 	return class
 end

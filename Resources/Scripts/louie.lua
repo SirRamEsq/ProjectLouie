@@ -1176,17 +1176,12 @@ function container.NewLouie(baseclass)
 		return false --not hit
 	end
 
-	--[[
-	function louie.OnLuaEvent(senderEID, eventString)
-
-	end
-	]]--
-
-	louie.EntityInterface = {
-		IsSolid		= function ()		return true end,
-		GetHealth = function ()			return louie.health end,
-		Attack		= function (damage) return louie.Attacked(damage) end
-	}
+	louie.EntityInterface = louie.EntityInterface or {}
+	local ei = louie.EntityInterface
+	ei.IsSolid		= function ()		return true end,
+	ei.IsPlayer	= function ()		return true end,
+	ei.GetHealth = function ()			return louie.health end,
+	ei.Attack		= function (damage) return louie.Attacked(damage) end
 
 	table.insert(louie.InitFunctions, louie.MainInitialize)
 	table.insert(louie.UpdateFunctions, louie.MainUpdate)

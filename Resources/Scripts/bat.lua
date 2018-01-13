@@ -7,7 +7,6 @@ function container.New(baseclass)
 
 	local Init = function()
 		local eid = bat.LEngineData.entityID
-		local depth = bat.LEngineData.depth
 		local spriteComp = CPP.interface:GetSpriteComponent(eid)
 		local spriteResource = CPP.interface:LoadSpriteResource("bat.xml")
 
@@ -15,7 +14,7 @@ function container.New(baseclass)
 			CPP.interface:LogError(eid, "spriteResource is NIL")
 		end
 
-		local sprite	= spriteComp:AddSprite(spriteResource, depth)
+		local sprite	= spriteComp:AddSprite(spriteResource)
 
 		math.randomseed(os.clock()*100000000000)
 		local newImage =  math.random(0, 5)

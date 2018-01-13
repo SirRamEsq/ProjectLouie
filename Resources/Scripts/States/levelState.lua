@@ -17,8 +17,8 @@ function container.NewState(baseclass)
 		state.save = save
 
 		--CPP.interface:LoadMap("Hub.tmx", 0)
-		state.LoadMap("Hub.tmx")
-		--state.LoadWorldMap()
+		--state.LoadMap("Hub.tmx")
+		state.LoadWorldMap()
 	end
 
 	function state.Update()
@@ -72,10 +72,22 @@ function container.NewState(baseclass)
 	end
 
 	function state.LoadWorldMap()
+		local c = CPP.interface
 		local onLoad = function(map)
 			--local player = CPP.interface:EntityNewPrefab("player", 4*16 20*16, 0, 0, "worldMapLouie.xml" )
-			local playerEID = CPP.interface:EntityNew("player", 4*16, 20*16, 0, 0, "worldMapLouie.lua", {})
-			local cameraEID = CPP.interface:EntityNew("camera", 4*16, 20*16, 0, playerEID, "Camera/playerCamera.lua", {})
+			--local playerEID = CPP.interface:EntityNew("player", 4*16, 20*16, 0, 0, "worldMapLouie.lua", {})
+			--local cameraEID = CPP.interface:EntityNew("camera", 4*16, 20*16, 0, playerEID, "Camera/playerCamera.lua", {["_PARENT"] = playerEID})
+
+
+			local playerEID = CPP.interface.entity:New()
+			local playerPrefab = "worldMapLouie.xml"
+			c:GetPositionComponent(playerEID):SetPositionWorld(CPP.Vec2(4*16, 20*16))
+			c:GetSpriteComponent(playerEID):SetDepth(0)
+			c.script:CreateEntityPrefab(playerEID, playerPrefab, {})
+
+			local cameraEID = CPP.interface.entity:New()
+			local cameraScript = {"Camera/playerCamera.lua"}
+			c.script:CreateEntity(cameraEID, cameraScript, {["_PARENT"] = playerEID})
 		end
 		CPP.interface:LoadMap(state.worldMapName, 0, onLoad)
 	end
