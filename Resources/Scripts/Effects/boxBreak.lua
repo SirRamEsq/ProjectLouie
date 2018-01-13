@@ -26,8 +26,6 @@ function container.NewBoxBreak(baseclass)
 		-----------------------
 		--C++ Interface setup--
 		-----------------------
-		box.depth			= box.LEngineData.depth;
-		box.parent		= box.LEngineData.parent;
 		box.CPPInterface	= CPP.interface
 		box.EID			= box.LEngineData.entityID;
 		local EID = box.EID
@@ -35,6 +33,8 @@ function container.NewBoxBreak(baseclass)
 		box.mySpriteComp		= box.CPPInterface:GetSpriteComponent		(EID);
 		box.myPositionComp	= box.CPPInterface:GetPositionComponent (EID);
 		box.myParticleComp	= box.CPPInterface:GetParticleComponent (EID);
+
+		box.depth = box.mySpriteComp:GetDepth()
 
 		box.boxType = box.LEngineData.InitializationTable.boxType or 0
 

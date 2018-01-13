@@ -179,10 +179,10 @@ function container.NewLouie(baseclass)
 		-----------------------
 		--C++ Interface setup--
 		-----------------------
-		louie.depth	= louie.LEngineData.depth
 		louie.EID	= louie.LEngineData.entityID
 		louie.name = louie.LEngineData.name
 		louie.objType = louie.LEngineData.objType
+
 
 		louie.parentEID= 0
 
@@ -212,6 +212,8 @@ function container.NewLouie(baseclass)
 		louie.CompSprite	= CPP.interface:GetSpriteComponent(EID)
 		louie.CompPosition  = CPP.interface:GetPositionComponent(EID)
 		louie.CompLight		= CPP.interface:GetLightComponent(EID)
+
+		louie.depth = louie.CompSprite:GetDepth()
 
 		--[[
 		--Lights
@@ -1033,7 +1035,7 @@ function container.NewLouie(baseclass)
 					louie.LandOnGround(otherPos.y-louie.c.HEIGHT, 0)
 					CPP.interface.position:SetParent(louie.EID, entityID)
 
-					local vecMove = CPP.interface:EntityGetMovement(entityID)
+					local vecMove = CPP.interface.position:GetMovement(entityID)
 					louie.platformVelocityX=vecMove.x
 					louie.platformVelocityY=vecMove.y
 
@@ -1078,8 +1080,13 @@ function container.NewLouie(baseclass)
 			--Display box break effect
 			local name = ""
 			local scriptName = "Effects/boxBreak.lua"
-			CPP.interface:EntityNew(name,tx*16,ty*16, louie.depth, 0, scriptName,
-			{boxType = boxType1})
+			local scriptProperties = {boxType = boxType1}
+
+			local c = CPP.interface
+			local scriptEID = c.entity:New()
+			c:GetPositionComponent(scriptEID):SetPositionWorld(CPP.Vec2(tx*16,ty*16))
+			c:GetSpriteComponent(scriptEID):SetDepth(louie.depth)
+			c.script:CreateEntity(scriptEID, {scriptName}, scriptProperties)
 
 			--Return true, indicating box was broken
 			return true

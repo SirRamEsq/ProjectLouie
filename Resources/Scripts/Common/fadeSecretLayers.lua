@@ -38,11 +38,11 @@ function container.NewFadeOut(baseclass)
 		local x = class.C.WIDTH / 2
 		local y = class.C.HEIGHT / 2
 
-		t.currentMap = CPP.interface:GetMap()
-		local secretLayers = CPP.interface:GetLayersWithProperty(t.currentMap, secretProperty, true)
+		local currentMap = CPP.interface:GetMap()
+		local secretLayers = CPP.interface:GetLayersWithProperty(currentMap, secretProperty, true)
 		if(secretLayers ~= nil) then
 			--if not empty
-			if next(secretLayers) == nil then
+			if next(secretLayers) ~= nil then
 				local box = CPP.Rect(x,y,1,1)
 				--Create collision box only when secret layers exist
 				t.box = collision:AddCollisionBox(box);
