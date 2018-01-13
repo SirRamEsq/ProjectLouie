@@ -1178,9 +1178,9 @@ function container.NewLouie(baseclass)
 
 	louie.EntityInterface = louie.EntityInterface or {}
 	local ei = louie.EntityInterface
-	ei.IsSolid		= function ()		return true end,
-	ei.IsPlayer	= function ()		return true end,
-	ei.GetHealth = function ()			return louie.health end,
+	ei.IsSolid		= function ()		return true end
+	ei.IsPlayer	= function ()		return true end
+	ei.GetHealth = function ()			return louie.health end
 	ei.Attack		= function (damage) return louie.Attacked(damage) end
 
 	table.insert(louie.InitFunctions, louie.MainInitialize)
