@@ -121,6 +121,14 @@ container.New = function(base)
 	table.insert(class.InitFunctions, Init)
 	table.insert(class.UpdateFunctions, Update)
 
+	local Activate = function()
+		local state = CPP.interface:EntityGetInterface(class.LEngineData.stateEID)
+		state.LoadMap(class.stageName, 0)
+	end
+
+	class.EntityInterface = class.EntityInterface or {}
+	class.EntityInterface.Activate = Activate
+
 	return class
 end
 

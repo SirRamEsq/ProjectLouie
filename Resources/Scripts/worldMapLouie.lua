@@ -93,6 +93,11 @@ container.New = function(baseclass)
 		end
 	end
 
+	function class.OnEntityCollision(entityID, packet)
+		local otherEntity = CPP.interface:EntityGetInterface(entityID)
+		if class.input.key[class.c.K_ACTIVATE] then otherEntity.Activate() end
+	end
+
 	table.insert(class.InitFunctions, Init)
 	table.insert(class.UpdateFunctions, Update)
 

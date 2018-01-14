@@ -365,12 +365,12 @@ function container.NewLouie(baseclass)
 		end
 
 		if(louie.groundSpeed > louie.c.ACCELERATION)then
-			louie.currentSprite:SetAnimation("Walk")
+			louie.currentSprite:SetAnimation("Spin")
 			louie.currentSprite:SetAnimationSpeed(newImgSpd)
 			louie.facingDir = louie.c.FACING_RIGHT
 
 		elseif(louie.groundSpeed < -(louie.c.ACCELERATION))then
-			louie.currentSprite:SetAnimation("Walk")
+			louie.currentSprite:SetAnimation("Spin")
 			louie.currentSprite:SetAnimationSpeed(newImgSpd)
 			louie.facingDir = louie.c.FACING_LEFT
 
