@@ -20,7 +20,7 @@ function container.NewMain(baseclass)
 		local guiScript = "GUI/guiTest.lua"
 		--main.childEID = CPP.interface:EntityNew(guiScript, 0,0, main.depth, main.EID, guiScript, {})
 		main.childEID = c.entity:New()
-		c.entity:MapNameToEID(main.childEID, guiName)
+		c.entity:SetName(main.childEID, guiName)
 		main.childPos = c:GetPositionComponent(main.childEID)
 		main.childSpr = c:GetSpriteComponent(main.childEID)
 

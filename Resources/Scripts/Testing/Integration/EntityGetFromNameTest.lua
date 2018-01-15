@@ -3,6 +3,7 @@ function container.NewState(baseclass)
 	local state = baseclass or {}
 
 	function state.Initialize()
+		local entity = CPP.interface.entity
 		state.depth		= state.LEngineData.depth;
 		state.parent	= state.LEngineData.parent;
 		state.EID		= state.LEngineData.entityID;
@@ -15,9 +16,12 @@ function container.NewState(baseclass)
 		local scriptName ="dummy.lua"
 
 		--Create Entities
-		state.entity1 = CPP.interface:EntityNew( name, posX, posY, depth,  0, scriptName, {} )
-		state.entity2 = CPP.interface:EntityNew( name, posX, posY, depth,  0, scriptName, {} )
-		state.entity3 = CPP.interface:EntityNew( name, posX, posY, depth,  0, scriptName, {} )
+		state.entity1 = entity:New()
+		entity:SetName(state.entity1, state.name)	
+		state.entity2 = entity:New()
+		entity:SetName(state.entity2, state.name)	
+		state.entity3 = entity:New()
+		entity:SetName(state.entity3, state.name)	
 	end
 
 	function state.Setup(testing)
@@ -27,7 +31,7 @@ function container.NewState(baseclass)
 	end
 
 	function state.LookupEntitiesFromName(testing)
-		local entities = CPP.interface:EntityGetFromName(state.name)
+		local entities = CPP.interface.entity:NameLookup(state.name)
 		local success = testing:REQUIRE_NOT_EQUAL(entities, nil)
 		if not success then return end
 

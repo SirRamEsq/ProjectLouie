@@ -209,6 +209,7 @@ function container.NewLouie(baseclass)
 		louie.input.RegisterKey( louie.c.K_ACTIVATE)
 
 		louie.CompCollision = CPP.interface:GetCollisionComponent(EID)
+		louie.CompScript    = CPP.interface:GetScriptComponent(EID)
 		louie.CompSprite	= CPP.interface:GetSpriteComponent(EID)
 		louie.CompPosition  = CPP.interface:GetPositionComponent(EID)
 		louie.CompLight		= CPP.interface:GetLightComponent(EID)
@@ -664,7 +665,7 @@ function container.NewLouie(baseclass)
 			end
 		end
 
-		CPP.interface:EventLuaBroadcastEvent(louie.EID, "JUMP")
+		louie.CompScript:BroadcastEvent("JUMP")
 		louie.UnlockInput()
 	end
 
@@ -696,7 +697,7 @@ function container.NewLouie(baseclass)
 			louie.xspd = louie.xspd * 1.5
 		end
 
-		CPP.interface:EventLuaBroadcastEvent(louie.EID, "JUMP")
+		louie.CompScript:BroadcastEvent("JUMP")
 		louie.UnlockInput()
 	end
 
@@ -1069,8 +1070,7 @@ function container.NewLouie(baseclass)
 				louie.GetHat()
 
 			elseif(isSwitch ~= nil)then
-				CPP.interface:EventLuaBroadcastEvent(louie.EID, tostring(isSwitch))
-
+				louie.CompScript:BroadcastEvent(tostring(isSwitch))
 			end
 
 			--destroy box
