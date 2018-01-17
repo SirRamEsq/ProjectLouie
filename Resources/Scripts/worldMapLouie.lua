@@ -54,6 +54,7 @@ container.New = function(baseclass)
 	local Update = function()
 		class.HandleInput()
 		class.Animate()
+		class.input.Update()
 		local updateVec = CPP.Vec2(class.xspd, class.yspd)
 		class.CompPosition:SetMovement(updateVec)
 	end
@@ -95,7 +96,7 @@ container.New = function(baseclass)
 
 	function class.OnEntityCollision(entityID, packet)
 		local otherEntity = CPP.interface:EntityGetInterface(entityID)
-		if class.input.key[class.c.K_ACTIVATE] then otherEntity.Activate() end
+		if class.input.keyPress[class.c.K_ACTIVATE] then otherEntity.Activate() end
 	end
 
 	table.insert(class.InitFunctions, Init)
