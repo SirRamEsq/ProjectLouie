@@ -189,19 +189,21 @@ function container.NewGui(baseclass)
 			CPP.interface:LogError(gui.EID, "Sprite Button Pressed!")
 		end
 
+		gui.winSize = CPP.ImGui.GetWindowSize()
+		CPP.ImGui.End()
+		CPP.ImGui.PopStyleColor(6)
 		gui.frameCounter = gui.frameCounter + 1
 		if(gui.frameCounter > gui.frameCounterMax)then
 			gui.frameCounter = 0
 			gui.currentFrame = gui.currentFrame + 1
+			print("test")
+			CPP.interface:BREAK(gui.EID)
 		end
 		if(gui.currentFrame > gui.maxFrames)then
 			gui.currentFrame = 0
 		end
 
 
-		gui.winSize = CPP.ImGui.GetWindowSize()
-		CPP.ImGui.End()
-		CPP.ImGui.PopStyleColor(6)
 
 
 		--Center Window
