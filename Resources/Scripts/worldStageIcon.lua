@@ -25,6 +25,7 @@ container.New = function(base)
 		class.LoadFont()
 		class.SetResolution()
 
+		class.CompPosition = c:GetPositionComponent(eid)
 		class.CompSprite = c:GetSpriteComponent(eid)
 		local spr = class.CompSprite
 		class.depth = spr:GetDepth()
@@ -96,6 +97,9 @@ container.New = function(base)
 		local windowFlags = imGuiFlags.NoTitleBar + imGuiFlags.NoResize +
 		imGuiFlags.NoMove + imGuiFlags.AlwaysAutoResize
 
+		--World Position
+		CPP.ImGui.SetContext(1)
+
 		--push style options
 		CPP.ImGui.PushStyleColorWindowBG(CPP.Color(0.2, 0.2, 0.2, 1))
 
@@ -115,7 +119,9 @@ container.New = function(base)
 		local target = CPP.Vec2(class.windowX, class.windowY)
 
 		target.x = class.SlideFromRight(target.x)
-		CPP.ImGui.SetWindowPos(class.stageName, target, 0)
+		CPP.ImGui.SetWindowPos(class.stageName, class.CompPosition:GetPositionWorld(), 0)
+
+		CPP.ImGui.SetContext(0)
 	end
 
 	table.insert(class.InitFunctions, Init)
