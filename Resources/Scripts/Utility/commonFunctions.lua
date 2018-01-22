@@ -26,12 +26,15 @@ end
 function f.PrintTableRecursive(t, recurseLevel)
 	local retString = "    "
 	local recurse = recurseLevel or 0
+	if t == nil then
+		return "\nTABLE IS NIL"
+	end
 
 	if f.TableEmpty(t) then
 		retString = retString .. "\n"
 		for i=0,recurse do
 			--indent
-			retString = retString .. "--"
+			retString = retString .. " |"
 		end
 		retString = retString .. "TABLE EMPTY"
 		return retString
@@ -42,7 +45,7 @@ function f.PrintTableRecursive(t, recurseLevel)
 		retString = retString .. "\n"
 		for i=0,recurse do
 			--indent
-			retString = retString .. "--"
+			retString = retString .. " |"
 		end
 		retString = retString .. "["..tostring(k).."] = "..tostring(v)
 		if(type(v) == "table")then

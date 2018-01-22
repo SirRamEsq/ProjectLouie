@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<prefab>
+	<scripts>
+		<script name = "Common/entityCollision.lua"/>
+		<script name = "Common/tileCollisionDown.lua"/>
+		<script name = "Items/Projectiles/rock.lua"/>
+	</scripts>
+</prefab>

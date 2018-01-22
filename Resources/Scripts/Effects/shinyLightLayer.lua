@@ -1,17 +1,23 @@
-
+--[[
+--
+-- This script will grab a tile layer and flicker its alpha to make it look
+-- somewhat like light
+--
+--]]
 local container = {}
 function container.New(baseclass)
 	local class = baseclass or {}
 
 	function class.Initialize()
+		local c = CPP.interface
 		local initData = class.LEngineData.InitializationTable
 		local EID = class.LEngineData.entityID
 		local lightLayerName = initData.lightLayer or "lightFG"
 
-		local currentMap = CPP.interface:GetMap()
+		local currentMap = c:GetMap()
 		local lightLayer = currentMap:GetTileLayer(lightLayerName)
 		if(lightLayer == nil) then
-			CPP.interface:LogError(EID, "Light layer is NIL!")
+			c:LogError(EID, "Light layer is NIL!")
 		end
 
 		class.lightLayer = lightLayer

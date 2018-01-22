@@ -16,13 +16,14 @@ function NewRockThrower(baseclass)
 	local function Init()
 		local LED = class.LEngineData
 		local iface = CPP.interface
-		class.depth        = LED.depth;
 		class.parentEID    = LED.parentEID;
 		class.EID          = LED.entityID;
 
 		class.CompSprite   = iface:GetSpriteComponent   (class.EID)
 		class.CompCol      = iface:GetCollisionComponent(class.EID)
 		class.CompPos   = iface:GetPositionComponent (class.EID)
+
+		class.depth = class.CompSprite:GetDepth()
 
 		local spriteName = class.C.spriteName
 		class.spriteRSC = iface:LoadSpriteResource(spriteName)
@@ -49,7 +50,15 @@ function NewRockThrower(baseclass)
 	end
 
 	function class.Throw()
+		local c = CPP.interface
 		class.sprite:SetAnimation(class.C.animationStand)
+
+		local newEID = c.entity:New()
+		local prefabName = "rock.xml"
+		local speed	={x=2 * class.dir,  y=0}
+		c.script:CreateEntityPrefab(newEID, prefabName, {initialSpeed=speed})
+		c:GetPositionComponent(newEID):SetPositionWorld(class.CompPos:GetPositionWorld())
+		c:GetSpriteComponent(newEID):SetDepth(class.CompSprite:GetDepth())
 	end
 
 	local function Update()

@@ -197,7 +197,6 @@ function container.NewGui(baseclass)
 			gui.frameCounter = 0
 			gui.currentFrame = gui.currentFrame + 1
 			print("test")
-			CPP.interface:BREAK(gui.EID)
 		end
 		if(gui.currentFrame > gui.maxFrames)then
 			gui.currentFrame = 0

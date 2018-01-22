@@ -366,12 +366,12 @@ function container.NewLouie(baseclass)
 		end
 
 		if(louie.groundSpeed > louie.c.ACCELERATION)then
-			louie.currentSprite:SetAnimation("Spin")
+			louie.currentSprite:SetAnimation("Walk")
 			louie.currentSprite:SetAnimationSpeed(newImgSpd)
 			louie.facingDir = louie.c.FACING_RIGHT
 
 		elseif(louie.groundSpeed < -(louie.c.ACCELERATION))then
-			louie.currentSprite:SetAnimation("Spin")
+			louie.currentSprite:SetAnimation("Walk")
 			louie.currentSprite:SetAnimationSpeed(newImgSpd)
 			louie.facingDir = louie.c.FACING_LEFT
 
@@ -1158,12 +1158,17 @@ function container.NewLouie(baseclass)
 
 		louie.health = louie.health-hitpoints
 		if (louie.health == 1) then
+			local c = CPP.interface
+
 			local pos = louie.CompPosition:GetPositionWorld()
 			local name = ""
 			local scriptName = "Effects/fallingHat.lua"
-			CPP.interface:EntityNew(name, pos.x, pos.y, louie.depth, 0, scriptName,
-			{direction = louie.facingDir * -1})
-			CPP.interface:PlaySound(louie.SoundFireball, 100)
+			local EID = c.entity:New()
+			c.script:CreateEntity(EID, {scriptName}, {direction = louie.facingDir * -1})
+			c:GetPositionComponent(EID):SetPositionWorld(pos)
+			c:GetSpriteComponent(EID):SetDepth(louie.depth)
+
+			c:PlaySound(louie.SoundFireball, 100)
 		end
 	end
 

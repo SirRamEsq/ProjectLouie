@@ -227,7 +227,7 @@ function c.GetHeightMapValue(absoluteX, tileCollisionPacket)
 
 	local box_value = 0
 	local boxid=tileCollisionPacket:GetBox():GetID()
-	local hmap=tileCollisionPacket:GetHmap()
+	local hmap=tileCollisionPacket:GetHMap()
 	local HMAP_index_value= 0
 	local tx=tileCollisionPacket:GetTileX()
 
@@ -249,7 +249,7 @@ function c.GetHeightMapValue(absoluteX, tileCollisionPacket)
 		return
 	end
 
-	return hmap:GetHeightMapH( HMAP_index_value )
+	return hmap:GetHeightH( HMAP_index_value )
 end
 
 function c.UseShortBoxes()
@@ -317,7 +317,7 @@ function c.OnTileCollision(packet)
 
 	local layer=packet:GetLayer()
 	local usesHMaps=layer:UsesHMaps()
-	local hmap=packet:GetHmap()
+	local hmap=packet:GetHMap()
 
 	local hspd = c.xspd
 	local vspd = c.yspd
