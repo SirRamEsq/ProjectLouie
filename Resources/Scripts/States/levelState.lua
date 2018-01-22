@@ -47,7 +47,6 @@ function container.NewState(baseclass)
 			if(state.fadeOutPercentage < 0)then
 				state.fadeOutPercentage = 0
 			end
-			CPP.interface:LogError(state.EID, tostring(state.fadeOutPercentage))
 
 			local newLight = CPP.Vec3(0,0,0)
 			newLight.x = state.ambientLight.x * state.fadeOutPercentage
@@ -110,7 +109,6 @@ function container.NewState(baseclass)
 	end
 
 	function state.LoadMap(name, entranceID)
-		CPP.interface:LogError(state.EID, "CALLED")
 		local entMan = CPP.interface.entity
 		entMan:DeactivateAllExcept({state.EID})
 		state.newMapName = name

@@ -11,7 +11,7 @@ function NewRockThrower(baseclass)
 	class.dir = class.C.DIR_LEFT
 	class.alarm = {}
 	class.alarm.reload = 1
-	class.timing = require("Utility/timing.lua")
+	class.timing = (require("Utility/timing.lua"))()
 
 	local function Init()
 		local LED = class.LEngineData

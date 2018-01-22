@@ -35,7 +35,7 @@ function NewFallingPlatform(baseclass)
 	platform.spriteOffset.max = platform.spriteOffset.yDefault + 2
 	platform.spriteOffset.min = platform.spriteOffset.yDefault - 2
 
-	platform.timing    = require("Utility/timing.lua")
+	platform.timing    = (require("Utility/timing.lua"))()
 
 	local Init = function()
 		-----------------------
