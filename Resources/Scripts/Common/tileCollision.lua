@@ -114,7 +114,7 @@ container.New = function(base)
 	function class.tile.right.Handle(packet)
 		if usesHMaps then return end
 		local tr = class.tile.right
-		local wx = (packet:GetTileX() * 16 ) - class.C.WIDTH 
+		local wx = (packet:GetTileX() * 16 ) - class.C.WIDTH  
 		local newPosition = CPP.Vec2(wx,0)
 		if tr.callback ~= nil then
 			tr.callback(packet, newPosition)

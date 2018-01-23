@@ -275,8 +275,8 @@ function container.NewLouie(baseclass)
 		--louie.tileCollision.Init(louie.c.COL_WIDTH, louie.c.COL_HEIGHT, louie.EID)
 		louie.tile.up.callback	= louie.OnTileUp
 		louie.tile.down.callback  = louie.OnTileDown
-		louie.tile.left.callback  = louie.OnTileHorizontal
-		louie.tile.right.callback = louie.OnTileHorizontal
+		louie.tile.left.callback  = louie.OnTileLeft
+		louie.tile.right.callback = louie.OnTileRight
 
 		--Short boxes
 		local shortLeft = CPP.Rect(0,16,1,2)
@@ -1142,6 +1142,28 @@ function container.NewLouie(baseclass)
 		CPP.interface.position:SetParent(louie.EID, 0)
 	end
 
+	function louie.OnTileLeft(packet, newPosition)
+		if louie.tile.groundTouch then
+			if louie.groundSpeed <= 0 then
+				louie.OnTileHorizontal(packet, newPosition)	
+			end
+		else 
+			if louie.xspd <= 0 then
+				louie.OnTileHorizontal(packet, newPosition)	
+			end
+		end
+	end
+	function louie.OnTileRight(packet, newPosition)
+		if louie.tile.groundTouch then
+			if louie.groundSpeed >= 0 then
+				louie.OnTileHorizontal(packet, newPosition)	
+			end
+		else
+			if louie.xspd >= 0 then
+				louie.OnTileHorizontal(packet, newPosition)	
+			end
+		end
+	end
 	function louie.OnTileHorizontal(packet, newPosition)
 		local tx = packet:GetTileX()
 		local ty = packet:GetTileY()
