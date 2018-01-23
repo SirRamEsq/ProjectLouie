@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.12.21" orientation="orthogonal" renderorder="left-up" width="200" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#3172c1" nextobjectid="20">
+<map version="1.0" tiledversion="1.1.0" orientation="orthogonal" renderorder="left-up" width="200" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#3172c1" nextobjectid="20">
  <properties>
   <property name="_AMBIENT_B" type="float" value="0.65"/>
   <property name="_AMBIENT_G" type="float" value="0.65"/>
@@ -46327,6 +46327,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="28"/>
    <tile/>
    <tile/>
    <tile/>
@@ -46337,8 +46338,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="28"/>
    <tile/>
    <tile/>
    <tile/>

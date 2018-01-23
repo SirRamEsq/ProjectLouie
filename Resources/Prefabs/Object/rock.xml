@@ -3,7 +3,7 @@
 <prefab>
 	<scripts>
 		<script name = "Common/entityCollision.lua"/>
-		<script name = "Common/tileCollisionDown.lua"/>
+		<script name = "Common/tileCollision.lua"/>
 		<script name = "Items/Projectiles/rock.lua"/>
 	</scripts>
 </prefab>

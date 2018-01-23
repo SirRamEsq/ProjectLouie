@@ -1,7 +1,6 @@
 local container = {}
 function container.NewFallingHat(baseclass)
-	--ignore baseclass
-	local hat = {}
+	local hat = baseclass or {}
 	--Constants
 	hat.WIDTH=8;
 	hat.HEIGHT=8;

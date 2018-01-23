@@ -49,12 +49,15 @@ container.New = function(base)
 		box:CheckForTiles(class.TileCollisionRight)
 		class.col.boxRight = box
 		class.tile.down.callback = class.TileCollisionBottom
+		class.tile.left.callback = class.TileCollisionLeft
+		class.tile.right.callback = class.TileCollisionRight
 	end
 
 	local Update = function()
 		class.speed.y = class.speed.y + class.C.GRAVITY
 		local movement = CPP.Vec2(class.speed.x, class.speed.y)
 		class.CompPos:SetMovement(movement)
+		class.tile.Update()
 	end
 
 	function class.ReverseDirection()
@@ -73,9 +76,10 @@ container.New = function(base)
 		end
 	end
 
-	class.TileCollisionBottom = function(packet)
+	class.TileCollisionBottom = function(packet, newPosition)
 		if class.speed.y > 0 then
 			class.speed.y = 0
+			class.CompPos:SetPositionWorldY(newPosition.y)
 		end
 	end
 

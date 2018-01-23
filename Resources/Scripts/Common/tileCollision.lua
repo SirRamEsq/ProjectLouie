@@ -1,81 +1,253 @@
 --[[
+--This script will enable an entity to stand on tiles and
+--handle height maps
+--
 --TO USE:
 --Make sure type.C.WIDTH and HEIGHT are set before calling Init
---Make sure that at some point during the update funciton
---type.tileCollision.Update(xspd,yspd) is called
+--Can specify all properties of
+--class.tile.down / left / right / up
 --
---Can override the following functions before Init is called
---	type.tileCollision.OnTileRight
---	type.tileCollision.OnTileDown
---	type.tileCollision.OnTileLeft
---	type.tileCollision.OnTileRight
---	type.OnTileCollision
+--	callback (packet, newPosition)- Function called after new correct position is processed
+--	Handle (packet)- Function used to process a collision, shouldn't be set, can be referenced
+--	shape - if the default shape isn't cutting it, then one can be set before calling Init
+--	order- order processed
+--
 --]]
+local utility = require("Utility/commonFunctions.lua")
 local container = {}
+container.New = function(base)
+	local class = base or {}
+	class.C = class.C or {}
 
-function container.new(base)
-	local type = base or {}
-	type.tileCollision = require("Utility/collisionSystem.lua")
+	class.tile			= class.tile or {}
+	class.tile.down		= class.tile.down or {}
+	class.tile.left		= class.tile.left or {}
+	class.tile.right	= class.tile.right or {}
+	class.tile.up		= class.tile.up or {}
 
-	type.InitFunctions = type.InitFunctions or {}
+	class.tile.down.defaultOrder		= 5
+	class.tile.up.defaultOrder		= 10
+	class.tile.left.defaultOrder		= 15
+	class.tile.right.defaultOrder	= 15
 
-	function tileInit()
-		local eid = type.LEngineData.entityID
-		local collision = CPP.interface:GetCollisionComponent(eid)
+	class.tile.groundTouch	= false
+	class.tile.upTouch		= false
+	class.tile.leftTouch	= false
+	class.tile.rightTouch	= false
 
-		type.tileCollision.Init(type.C.WIDTH, type.C.HEIGHT, CPP.interface, collision)
-		type.tileCollision.callbackFunctions.TileUp    = type.tileCollision.OnTileUp
-		type.tileCollision.callbackFunctions.TileDown  = type.tileCollision.OnTileDown
-		type.tileCollision.callbackFunctions.TileLeft  = type.tileCollision.OnTileLeft
-		type.tileCollision.callbackFunctions.TileRight = type.tileCollision.OnTileRight
+	--previous frame information
+	class.tile.previous = class.tile.previous or {}
+	class.tile.previous.groundTouch = false
+	class.tile.previous.upTouch = false
+	class.tile.previous.leftTouch = false
+	class.tile.previous.rightTouch = false
+
+	local function GetHeightMapValueHorizontal(wx, hmap)
+		--Get range between 0 and 15
+		local index = wx % 16
+
+		return hmap:GetHeightH(index)
 	end
 
-	function type.tileCollision.OnTileDown(newPosition, newAngle)
-		local eid = type.LEngineData.entityID
-		local position = CPP.interface:GetPositionComponent(eid)
-		local newPosition= position:TranslateWorldToLocal(newPosition)
-		position:SetPositionLocalY(newPosition.y)
+	local function TC_Down(packet, hmapValue)
+		local td = class.tile.down
 
-		if CPP.interface.HasSpriteComponent(eid) then
-			local sprite = CPP.interface.GetSpriteComponent(eid)
-			--Will rotate the first sprite loaded into the SpriteComponent
-			local firstSpriteLoadedID = 0
-			sprite:SetRotation(firstSpriteLoadedID, newAngle);
+		-- Get New World Posiiton ------------
+		local ty = packet:GetTileY()
+		local newY = ((ty+1)*16) - hmapValue - class.C.HEIGHT
+
+		local thisAngle=packet:GetHMap().angleH
+		thisAngle= math.abs(utility.AngleToSignedAngle(thisAngle))
+		if td.highestHeight ~= nil then
+			if td.highestHeight < newY then
+				return
+			elseif td.highestHeight == newY then
+				--if heights are the same, stand on the shallowest angle
+				if thisAngle >= class.tile.down.shallowestAngle then
+					return
+				end
+			end
+		end
+
+		td.shallowestAngle = thisAngle
+		td.highestHeight = newY
+
+		-- Set Position ----------------------
+		local newPosition = CPP.Vec2(0,newY)
+		newPosition= class.CompPos:TranslateWorldToLocal(newPosition)
+
+		class.tile.groundTouch = true
+
+		-- Set Callback if one exists---------
+		if td.callback ~= nil then
+			td.callback(packet, newPosition)
 		end
 	end
 
-	function type.tileCollision.OnTileRight(newPosition)
-		local eid = type.LEngineData.entityID
-		local position = CPP.interface:GetPositionComponent(eid)
-		local newPosition= position:TranslateWorldToLocal(newPosition)
-		position:SetPositionLocalX(newPosition.x)
+	function class.tile.down.HandleLeft(packet)
+		local wx = class.CompPos:GetPositionWorld().x
+		wx = wx + class.tile.down.shapeLeft.x
+		local hmap = GetHeightMapValueHorizontal(wx, packet:GetHMap())
+
+		TC_Down(packet, hmap)
 	end
 
-	function type.tileCollision.OnTileLeft(newPosition)
-		local eid = type.LEngineData.entityID
-		local position = CPP.interface:GetPositionComponent(eid)
-		local newPosition= position:TranslateWorldToLocal(newPosition)
-		position:SetPositionLocalX(newPosition.x)
+	function class.tile.down.HandleRight(packet)
+		local wx = class.CompPos:GetPositionWorld().x
+		wx = wx + class.tile.down.shapeRight.x
+		local hmap = GetHeightMapValueHorizontal(wx, packet:GetHMap())
+
+		TC_Down(packet, hmap)
 	end
 
-	function type.tileCollision.OnTileUp(newPosition)
-		local eid = type.LEngineData.entityID
-		local position = CPP.interface:GetPositionComponent(eid)
-		local newPosition= position:TranslateWorldToLocal(newPosition)
-		position:SetPositionLocalY(newPosition.y)
+	function class.tile.left.Handle(packet)
+		if usesHMaps then return end
+		local tl = class.tile.left
+		--right side of tile
+		local wx = (packet:GetTileX() * 16) + 15 
+		local newPosition = CPP.Vec2(wx,0)
+		if tl.callback ~= nil then
+			tl.callback(packet, newPosition)
+		end
+		class.tile.leftTouch = true
+	end
+	function class.tile.right.Handle(packet)
+		if usesHMaps then return end
+		local tr = class.tile.right
+		local wx = (packet:GetTileX() * 16 ) - class.C.WIDTH 
+		local newPosition = CPP.Vec2(wx,0)
+		if tr.callback ~= nil then
+			tr.callback(packet, newPosition)
+		end
+		class.tile.rightTouch = true
+	end
+	function class.tile.up.Handle(packet)
+		if usesHMaps then return end
+		local tu = class.tile.up
+		local wy = (packet:GetTileY() + 1) * 16
+		local newPosition = CPP.Vec2(0,wy)
+		if tu.callback ~= nil then
+			tu.callback(packet, newPosition)
+		end
+		class.tile.upTouch = true
 	end
 
-	function type.OnTileCollision(packet)
-		local position = CPP.interface:GetPositionComponent(eid)
-		local absolutePos = position:GetPositionWorld():Round()
-		local speed = position:GetMovement():Round()
-		type.tileCollision.OnTileCollision(packet, speed.x, speed.y, absolutePos.x, absolutePos.y)
+	function class.tile.down.Init(CompCol)
+		local c = CPP.interface
+		local down = class.tile.down
+		local boxLeft = math.floor(class.C.WIDTH / 4)
+		local boxRight = class.C.WIDTH - boxLeft
+		local shape1 = CPP.Rect(boxLeft, class.C.HEIGHT, 1, 2)
+		local shape2 = CPP.Rect(boxRight, class.C.HEIGHT, 1, 2)
+		down.shapeLeft = down.shape or shape1
+		down.shapeRight = down.shape or shape2
+		down.callback = down.callback or nil
+
+		down.cboxLeft = CompCol:AddCollisionBox(down.shapeLeft)
+		down.cboxRight = CompCol:AddCollisionBox(down.shapeRight)
+
+		down.cboxLeft:CheckForTiles()
+		down.cboxRight:CheckForTiles()
+		class.tile.CheckForSolidLayers(down.cboxLeft, down.HandleLeft)
+		class.tile.CheckForSolidLayers(down.cboxRight, down.HandleRight)
+		down.cboxRight:SetOrder(down.order or down.defaultOrder)
+		down.cboxLeft:SetOrder(down.order or down.defaultOrder)
+
+		down.highestHeight = 0
+		down.shallowestAngle = 0
 	end
 
-	--Add to sequence of init functions to call
-	table.insert(type.InitFunctions, tileInit)
+	function class.tile.left.Init(CompCol)
+		local c = CPP.interface
+		local height = class.C.HEIGHT
+		local quarterHeight = math.floor(height / 4)
+		local shape = CPP.Rect(0, quarterHeight, 0, height - (quarterHeight*2))
+		local left = class.tile.left
+		left.shape = left.shape or shape
+		left.callback = left.callback or nil
 
-	return type;
+		left.cbox= CompCol:AddCollisionBox(left.shape)
+		left.cbox:CheckForTiles()
+		class.tile.CheckForSolidLayers(left.cbox, left.Handle)
+		left.cbox:SetOrder(left.order or left.defaultOrder)
+	end
+
+	function class.tile.right.Init(CompCol)
+		local c = CPP.interface
+		local height = class.C.HEIGHT
+		local quarterHeight = math.floor(height / 4)
+		local shape = CPP.Rect(class.C.WIDTH, quarterHeight, 0, height - (quarterHeight*2))
+		local right = class.tile.right
+		right.shape = right.shape or shape
+		right.callback = right.callback or nil
+
+		right.cbox= CompCol:AddCollisionBox(right.shape)
+		right.cbox:CheckForTiles()
+		class.tile.CheckForSolidLayers(right.cbox, right.Handle)
+		right.cbox:SetOrder(right.order or right.defaultOrder)
+	end
+	function class.tile.up.Init(CompCol)
+		local c = CPP.interface
+		local offset = math.floor(class.C.WIDTH / 4)
+		local shape = CPP.Rect(offset, 0, class.C.WIDTH - (offset*2), 1)
+		local up = class.tile.up
+		up.shape = up.shape or shape
+		up.callback = up.callback or nil
+
+		up.cbox= CompCol:AddCollisionBox(up.shape)
+		up.cbox:CheckForTiles()
+		class.tile.CheckForSolidLayers(up.cbox, up.Handle)
+		up.cbox:SetOrder(up.order or up.defaultOrder)
+	end
+
+	local function Init()
+		local c = CPP.interface
+		local EID = class.LEngineData.entityID
+		local CompCol = c:GetCollisionComponent(EID)
+		class.CompPos = c:GetPositionComponent(EID)
+
+		class.eid = EID
+		if class.C.WIDTH == nil then
+			c:LogError(EID, "C.WIDTH not specfied!")
+			return
+		end
+
+		local map = c:GetMap()
+		class.tile.solidLayers = c:GetLayersWithProperty(map, "_SOLID", true)
+		class.tile.down.Init(CompCol)
+		class.tile.left.Init(CompCol)
+		class.tile.right.Init(CompCol)
+		class.tile.up.Init(CompCol)
+	end
+
+	function class.tile.CheckForSolidLayers(box, callback)
+		for k, v in pairs(class.tile.solidLayers)do
+			box:CheckForLayer(v, callback)
+		end
+	end
+
+	function class.tile.Update()
+		local ct = class.tile
+		ct.down.highestHeight = nil
+		--greater than 360 degrees
+		ct.down.shallowestAngle = 400
+		ct.previous.groundTouch = ct.groundTouch
+		ct.groundTouch = false
+
+		ct.previous.groundTouch = ct.groundTouch
+		ct.previous.upTouch = ct.upTouch
+		ct.previous.leftTouch = ct.leftTouch
+		ct.previous.rightTouch = ct.rightTouch
+
+		ct.groundTouch = false
+		ct.upTouch = false
+		ct.leftTouch = false
+		ct.rightTouch = false
+	end
+
+	table.insert(class.InitFunctions, Init)
+
+	return class
 end
 
-return container.new
+return container.New
