@@ -1164,9 +1164,9 @@ function container.NewLouie(baseclass)
 			local name = ""
 			local scriptName = "Effects/fallingHat.lua"
 			local EID = c.entity:New()
-			c.script:CreateEntity(EID, {scriptName}, {direction = louie.facingDir * -1})
 			c:GetPositionComponent(EID):SetPositionWorld(pos)
 			c:GetSpriteComponent(EID):SetDepth(louie.depth)
+			c.script:CreateEntity(EID, {scriptName}, {direction = louie.facingDir*-1})
 
 			c:PlaySound(louie.SoundFireball, 100)
 		end

@@ -56,7 +56,7 @@ function container.NewRockThrower(baseclass)
 
 		local newEID = c.entity:New()
 		local prefabName = "rock.xml"
-		local speed	={x=(5 * class.dir),  y=0}
+		local speed	={x=(4 * class.dir),  y=-0.5}
 		local pos = class.CompPos:GetPositionWorld()
 		pos.y = pos.y + 8
 		c:GetPositionComponent(newEID):SetPositionWorld(pos)

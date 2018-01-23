@@ -15,8 +15,6 @@ function container.NewFallingHat(baseclass)
 	hat.CompPosition=nil;
 	hat.CompParticle=nil;
 	hat.EID=0;
-	hat.depth=0;
-	hat.parent=0;
 
 	hat.particleCreator=nil;
 	hat.particleVelocitySuperMin = nil;
@@ -32,25 +30,24 @@ function container.NewFallingHat(baseclass)
 		-----------------------
 		--C++ Interface setup--
 		-----------------------
-		hat.depth		= hat.LEngineData.depth;
-		hat.parent		= hat.LEngineData.parent;
+		local c = CPP.interface
 		hat.EID			= hat.LEngineData.entityID;
 		local EID = hat.EID
 
-		hat.CompSprite		= CPP.interface:GetSpriteComponent   (EID);
-		hat.CompPosition	= CPP.interface:GetPositionComponent (EID);
-		hat.CompParticle	= CPP.interface:GetParticleComponent (EID);
+		hat.CompSprite		= c:GetSpriteComponent   (EID);
+		hat.CompPosition	= c:GetPositionComponent (EID);
+		hat.CompParticle	= c:GetParticleComponent (EID);
 		hat.dir = hat.LEngineData.InitializationTable.direction or 1
 
-		hat.sprite	 = CPP.interface:LoadSpriteResource("louieHat.xml");
-		hat.spriteID = hat.CompSprite:AddSprite(hat.sprite, hat.depth, hat.sprite:Width()/2 ,hat.sprite:Height()/2);
+		hat.spriteRsc	 = c:LoadSpriteResource("louieHat.xml");
+		hat.sprite = hat.CompSprite:AddSprite(hat.spriteRsc)
 		hat.animation = "hat"
 		hat.rotation = 0
 		hat.rotationSpeed = 2.5
 
-		hat.CompSprite:SetAnimation		(hat.spriteID, hat.animation);
-		hat.CompSprite:SetAnimationSpeed(hat.spriteID, 0);
-		hat.CompSprite:SetRotation		(hat.spriteID, 0);
+		hat.sprite:SetAnimation		(hat.animation);
+		hat.sprite:SetAnimationSpeed(0);
+		hat.sprite:SetRotation		(0);
 
 		hat.deleteTimer = 600
 
@@ -76,7 +73,6 @@ function container.NewFallingHat(baseclass)
 		hat.particleCreator:SetParticlesPerFrame(.25);
 		hat.particleCreator:SetScalingX(2,2);
 		hat.particleCreator:SetScalingY(2,2);
-		hat.particleCreator:SetDepth(hat.depth);
 		hat.particleCreator:SetColor(0.9, 0.2, 0.2, 1,	1, .1, .1, 1);
 		
 		hat.particleCreator:SetShape(4);
@@ -87,7 +83,7 @@ function container.NewFallingHat(baseclass)
 	end
 
 	function hat.Update()
-		hat.CompSprite:SetRotation(hat.spriteID, hat.rotation);
+		hat.sprite:SetRotation(hat.rotation);
 		hat.rotation = hat.rotation + hat.rotationSpeed
 		hat.rotation = hat.rotation % 360
 

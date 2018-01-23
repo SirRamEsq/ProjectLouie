@@ -11,6 +11,7 @@ container.New = function(base)
 	class.C.spriteName = "rock.xml"
 	class.C.animationRoll = "Roll"
 	class.C.WIDTH = 16
+	class.C.HEIGHT = 16
 	class.C.GRAVITY = 0.21875
 
 	local Init = function()
@@ -47,6 +48,7 @@ container.New = function(base)
 		box = class.CompCollision:AddCollisionBox(shape)
 		box:CheckForTiles(class.TileCollisionRight)
 		class.col.boxRight = box
+		class.tile.down.callback = class.TileCollisionBottom
 	end
 
 	local Update = function()
@@ -73,10 +75,7 @@ container.New = function(base)
 
 	class.TileCollisionBottom = function(packet)
 		if class.speed.y > 0 then
-			local newY = packet:GetTileY() * 16
 			class.speed.y = 0
-
-			class.CompPos:SetPositionWorldY(newY)
 		end
 	end
 
