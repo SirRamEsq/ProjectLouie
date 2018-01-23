@@ -56,10 +56,11 @@ function container.NewRockThrower(baseclass)
 
 		local newEID = c.entity:New()
 		local prefabName = "rock.xml"
-		local speed	={x=2 * class.dir,  y=0}
-		c:GetPositionComponent(newEID):SetPositionWorld(class.CompPos:GetPositionWorld())
+		local speed	={x=(5 * class.dir),  y=0}
+		local pos = class.CompPos:GetPositionWorld()
+		pos.y = pos.y + 8
+		c:GetPositionComponent(newEID):SetPositionWorld(pos)
 		c:GetSpriteComponent(newEID):SetDepth(class.depth)
-		c:LogError(class.EID, "DEPTH: " .. tostring(class.CompSprite:GetDepth()))
 		c.script:CreateEntityPrefab(newEID, prefabName, {initialSpeed=speed})
 	end
 
@@ -69,7 +70,6 @@ function container.NewRockThrower(baseclass)
 
 	table.insert(class.InitFunctions, Init)
 	table.insert(class.UpdateFunctions, Update)
-
 
 	return class
 end

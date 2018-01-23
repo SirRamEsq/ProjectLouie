@@ -106,10 +106,6 @@ container.New = function(base)
 		class.tile.down.highestHight = nil
 	end
 
-
-	print(utility.PrintTableRecursive(class))
-	print(utility.PrintTableRecursive(base))
-
 	table.insert(class.InitFunctions, Init)
 	table.insert(class.UpdateFunctions, Update)
 

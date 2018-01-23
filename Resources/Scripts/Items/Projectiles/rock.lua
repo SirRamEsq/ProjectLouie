@@ -5,6 +5,7 @@
 --]]
 local container = {}
 container.New = function(base)
+	local utility = require("Utility/commonFunctions.lua")
 	local class = base or {}
 	class.C = class.C or {}
 	class.C.spriteName = "rock.xml"
@@ -18,12 +19,11 @@ container.New = function(base)
 		local EID = LED.entityID;
 		class.EID = EID
 
-		class.initialSpeed = LED.InitializationTable.initialSpeed or {x=1,y=0}
+		class.initialSpeed = LED.InitializationTable.initialSpeed --or {x=1,y=0}
 		class.speed = class.initialSpeed
 
 		class.CompSprite = c:GetSpriteComponent(EID)
 		class.CompPos = c:GetPositionComponent(EID)
-		c:LogError(EID, "DEPTH: " .. tostring(class.CompSprite:GetDepth()))
 
 		---SPRITE-----------------------------------------------------
 		local spriteName = class.C.spriteName
