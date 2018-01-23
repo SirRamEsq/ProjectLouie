@@ -103,8 +103,8 @@ container.New = function(base)
 	function class.tile.left.Handle(packet)
 		if usesHMaps then return end
 		local tl = class.tile.left
-		--right side of tile
-		local wx = (packet:GetTileX() * 16) + 15 
+		--left side of tile to the right of the one colided with
+		local wx = (packet:GetTileX() * 16) + 16 
 		local newPosition = CPP.Vec2(wx,0)
 		if tl.callback ~= nil then
 			tl.callback(packet, newPosition)
@@ -161,7 +161,8 @@ container.New = function(base)
 		local c = CPP.interface
 		local height = class.C.HEIGHT
 		local quarterHeight = math.floor(height / 4)
-		local shape = CPP.Rect(0, quarterHeight, 0, height - (quarterHeight*2))
+		-- -1 is just outside where you shouldn't collide with
+		local shape = CPP.Rect(-1, quarterHeight, 0, height - (quarterHeight*2))
 		local left = class.tile.left
 		left.shape = left.shape or shape
 		left.callback = left.callback or nil
@@ -176,6 +177,7 @@ container.New = function(base)
 		local c = CPP.interface
 		local height = class.C.HEIGHT
 		local quarterHeight = math.floor(height / 4)
+		-- class.C.Width is just outside the area you shouldn't colide with (remember '0' is a pixel)
 		local shape = CPP.Rect(class.C.WIDTH, quarterHeight, 0, height - (quarterHeight*2))
 		local right = class.tile.right
 		right.shape = right.shape or shape
