@@ -1,4 +1,5 @@
-function NewRockThrower(baseclass)
+local container = {}
+function container.NewRockThrower(baseclass)
 	local class = baseclass or {}
 
 	class.C = class.C or {}
@@ -56,9 +57,10 @@ function NewRockThrower(baseclass)
 		local newEID = c.entity:New()
 		local prefabName = "rock.xml"
 		local speed	={x=2 * class.dir,  y=0}
-		c.script:CreateEntityPrefab(newEID, prefabName, {initialSpeed=speed})
 		c:GetPositionComponent(newEID):SetPositionWorld(class.CompPos:GetPositionWorld())
-		c:GetSpriteComponent(newEID):SetDepth(class.CompSprite:GetDepth())
+		c:GetSpriteComponent(newEID):SetDepth(class.depth)
+		c:LogError(class.EID, "DEPTH: " .. tostring(class.CompSprite:GetDepth()))
+		c.script:CreateEntityPrefab(newEID, prefabName, {initialSpeed=speed})
 	end
 
 	local function Update()
@@ -72,4 +74,4 @@ function NewRockThrower(baseclass)
 	return class
 end
 
-return NewRockThrower
+return container.NewRockThrower

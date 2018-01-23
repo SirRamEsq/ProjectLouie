@@ -23,6 +23,7 @@ container.New = function(base)
 
 		class.CompSprite = c:GetSpriteComponent(EID)
 		class.CompPos = c:GetPositionComponent(EID)
+		c:LogError(EID, "DEPTH: " .. tostring(class.CompSprite:GetDepth()))
 
 		---SPRITE-----------------------------------------------------
 		local spriteName = class.C.spriteName
