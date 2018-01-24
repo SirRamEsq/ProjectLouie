@@ -13,7 +13,7 @@ container.New = function(base)
 	class.C.WIDTH = 16
 	class.C.HEIGHT = 16
 	class.C.GRAVITY = 0.21875
-	class.lifeTime = 60 -- ten seconds
+	class.lifeTime = 600 -- ten seconds
 	class.initialSpeed = {x=1, y=0}
 
 	class.delete = nil
@@ -70,9 +70,13 @@ container.New = function(base)
 		class.tile.down.callback = class.TileCollisionBottom
 		class.tile.left.callback = class.TileCollisionLeft
 		class.tile.right.callback = class.TileCollisionRight
+
+		class.rotation = 0
 	end
 
 	local Update = function()
+		class.rotation = class.rotation + (7 * class.speed.x)
+		class.sprite:SetRotation(class.rotation)
 		class.framesAlive = class.framesAlive + 1
 		class.speed.y = class.speed.y + class.C.GRAVITY
 		local movement = CPP.Vec2(class.speed.x, class.speed.y)
@@ -82,7 +86,7 @@ container.New = function(base)
 		if class.delete ~= nil then
 			class.delete()
 		else
-			if class.speed.x < 1 or class.framesAlive >= class.lifeTime then
+			if class.framesAlive >= class.lifeTime then
 				class.delete = class.FadeOutDelete()
 			end
 		end
