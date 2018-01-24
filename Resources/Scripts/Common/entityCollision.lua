@@ -53,6 +53,13 @@ function container.new(base)
 		--CPP.interface:LogWarn(eid, tostring(eid) .. " Needs to have OnEntityCollision defined")
 	end
 
+	function class.entityCollision.Deactivate()
+		class.entityCollision.primary.box:Deactivate()
+	end
+	function class.entityCollision.Activate()
+		class.entityCollision.primary.box:Activate()
+	end
+
 	--Add to sequence of init functions to call
 	table.insert(class.InitFunctions, tileInit)
 

@@ -247,6 +247,23 @@ container.New = function(base)
 		ct.rightTouch = false
 	end
 
+	function class.tile.Deactivate()
+		local t = class.tile
+		t.down.cboxLeft:Deactivate()
+		t.down.cboxRight:Deactivate()
+		t.left.cbox:Deactivate()
+		t.right.cbox:Deactivate()
+		t.up.cbox:Deactivate()
+	end
+	function class.tile.Activate()
+		local t = class.tile
+		t.down.cboxLeft:Activate()
+		t.down.cboxRight:Activate()
+		t.left.cbox:Activate()
+		t.right.cbox:Activate()
+		t.up.cbox:Activate()
+	end
+
 	table.insert(class.InitFunctions, Init)
 
 	return class

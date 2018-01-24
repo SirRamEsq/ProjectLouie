@@ -13,15 +13,34 @@ container.New = function(base)
 	class.C.WIDTH = 16
 	class.C.HEIGHT = 16
 	class.C.GRAVITY = 0.21875
+	class.lifeTime = 60 -- ten seconds
+	class.initialSpeed = {x=1, y=0}
+
+	class.delete = nil
+
+	function class.FadeOutDelete()
+		local alpha = 1
+		class.entityCollision.Deactivate()
+		return function()
+			alpha = alpha - 0.025
+			class.sprite:SetAlpha(alpha)
+			if alpha <= 0 then
+				CPP.interface.entity:Delete(class.EID)
+			end
+		end
+	end
 
 	local Init = function()
 		local LED = class.LEngineData
+		local ini = LED.InitializationTable
 		local c = CPP.interface
 		local EID = LED.entityID;
 		class.EID = EID
 
-		class.initialSpeed = LED.InitializationTable.initialSpeed --or {x=1,y=0}
+		class.initialSpeed = ini.initialSpeed or class.initialSpeed
+		class.lifeTime = ini.lifeTime or class.lifeTime
 		class.speed = class.initialSpeed
+		class.framesAlive = 0
 
 		class.CompSprite = c:GetSpriteComponent(EID)
 		class.CompPos = c:GetPositionComponent(EID)
@@ -54,10 +73,19 @@ container.New = function(base)
 	end
 
 	local Update = function()
+		class.framesAlive = class.framesAlive + 1
 		class.speed.y = class.speed.y + class.C.GRAVITY
 		local movement = CPP.Vec2(class.speed.x, class.speed.y)
 		class.CompPos:SetMovement(movement)
 		class.tile.Update()
+
+		if class.delete ~= nil then
+			class.delete()
+		else
+			if class.speed.x < 1 or class.framesAlive >= class.lifeTime then
+				class.delete = class.FadeOutDelete()
+			end
+		end
 	end
 
 	function class.ReverseDirection()

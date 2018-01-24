@@ -196,7 +196,6 @@ function container.NewGui(baseclass)
 		if(gui.frameCounter > gui.frameCounterMax)then
 			gui.frameCounter = 0
 			gui.currentFrame = gui.currentFrame + 1
-			print("test")
 		end
 		if(gui.currentFrame > gui.maxFrames)then
 			gui.currentFrame = 0

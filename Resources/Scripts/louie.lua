@@ -358,28 +358,22 @@ function container.NewLouie(baseclass)
 			louie.isDecelerating = false
 		end
 		louie.saveData:SetInt("Coins", louie.items.coinCount)
-		CPP.interface:LogDebug(louie.EID, " [1] " .. tostring(louie.groundSpeed))
 		louie.SetCollisionBoxes()
 		louie.Climb()
 		louie.WallSlide()
 		louie.UpdateInputs()
-		CPP.interface:LogDebug(louie.EID, " [2] " .. tostring(louie.groundSpeed))
 
 		louie.LandOnPlatform()
 		louie.ApplySlopeFactor()
 		louie.ApplyFrictionGravity()
-		CPP.interface:LogDebug(louie.EID, " [3] " .. tostring(louie.groundSpeed))
 
 		louie.HandleInput()
-		CPP.interface:LogDebug(louie.EID, " [4] " .. tostring(louie.groundSpeed))
 		louie.Animate()
 
 		louie.UpdateCPP()
-		CPP.interface:LogDebug(louie.EID, " [5] " .. tostring(louie.groundSpeed))
 		louie.UpdateGUI()
 
 		louie.PrepareForNextFrame()
-		CPP.interface:LogDebug(louie.EID, " --- ")
 	end
 
 
