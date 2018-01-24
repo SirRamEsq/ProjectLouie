@@ -396,8 +396,14 @@ function container.NewLouie(baseclass)
 			louie.facingDir = louie.c.FACING_LEFT
 
 		elseif(louie.groundSpeed==0)then
-			louie.currentSprite:SetAnimation("Stand")
-			louie.currentSprite:SetAnimationSpeed(0)
+			--if only one ground collision is touching
+			if louie.common.XOR(louie.tile.groundTouchLeft, louie.tile.groundTouchRight)then
+				louie.currentSprite:SetAnimation("Teeter")
+				louie.currentSprite:SetAnimationSpeed(.5)
+			else
+				louie.currentSprite:SetAnimation("Stand")
+				louie.currentSprite:SetAnimationSpeed(0)
+			end
 		end
 
 		if(louie.isDecelerating) then
@@ -1139,22 +1145,22 @@ function container.NewLouie(baseclass)
 	function louie.OnTileLeft(packet, newPosition)
 		if louie.tile.groundTouch then
 			if louie.groundSpeed <= 0 then
-				louie.OnTileHorizontal(packet, newPosition)	
+				louie.OnTileHorizontal(packet, newPosition)
 			end
-		else 
+		else
 			if louie.xspd <= 0 then
-				louie.OnTileHorizontal(packet, newPosition)	
+				louie.OnTileHorizontal(packet, newPosition)
 			end
 		end
 	end
 	function louie.OnTileRight(packet, newPosition)
 		if louie.tile.groundTouch then
 			if louie.groundSpeed >= 0 then
-				louie.OnTileHorizontal(packet, newPosition)	
+				louie.OnTileHorizontal(packet, newPosition)
 			end
 		else
 			if louie.xspd >= 0 then
-				louie.OnTileHorizontal(packet, newPosition)	
+				louie.OnTileHorizontal(packet, newPosition)
 			end
 		end
 	end

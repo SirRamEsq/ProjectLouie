@@ -1,5 +1,17 @@
 local f = {}
 
+--will return true if ONLY ONE of the inputs is true
+function f.XOR(v1, v2)
+	--if both true
+	if v1 and v2 then return false end
+	--if both false
+	if not v1 and not v2 then return false end
+	--if only one is true
+	if v1 or v2 then return true end
+
+	return false
+end
+
 function f.AngleToSignedAngle(a)
 	if(a>180)then
 		a= a - 360;

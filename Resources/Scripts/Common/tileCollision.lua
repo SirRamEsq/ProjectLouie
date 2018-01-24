@@ -30,6 +30,8 @@ container.New = function(base)
 	class.tile.left.defaultOrder		= 15
 	class.tile.right.defaultOrder	= 15
 
+	class.tile.groundTouchLeft	= false
+	class.tile.groundTouchRight	= false
 	class.tile.groundTouch	= false
 	class.tile.upTouch		= false
 	class.tile.leftTouch	= false
@@ -37,6 +39,8 @@ container.New = function(base)
 
 	--previous frame information
 	class.tile.previous = class.tile.previous or {}
+	class.tile.previous.groundTouchLeft	= false
+	class.tile.previous.groundTouchRight	= false
 	class.tile.previous.groundTouch = false
 	class.tile.previous.upTouch = false
 	class.tile.previous.leftTouch = false
@@ -85,6 +89,7 @@ container.New = function(base)
 	end
 
 	function class.tile.down.HandleLeft(packet)
+		class.tile.groundTouchLeft = true
 		local wx = class.CompPos:GetPositionWorld().x
 		wx = wx + class.tile.down.shapeLeft.x
 		local hmap = GetHeightMapValueHorizontal(wx, packet:GetHMap())
@@ -93,6 +98,7 @@ container.New = function(base)
 	end
 
 	function class.tile.down.HandleRight(packet)
+		class.tile.groundTouchRight = true
 		local wx = class.CompPos:GetPositionWorld().x
 		wx = wx + class.tile.down.shapeRight.x
 		local hmap = GetHeightMapValueHorizontal(wx, packet:GetHMap())
@@ -104,7 +110,7 @@ container.New = function(base)
 		if usesHMaps then return end
 		local tl = class.tile.left
 		--left side of tile to the right of the one colided with
-		local wx = (packet:GetTileX() * 16) + 16 
+		local wx = (packet:GetTileX() * 16) + 16
 		local newPosition = CPP.Vec2(wx,0)
 		if tl.callback ~= nil then
 			tl.callback(packet, newPosition)
@@ -114,7 +120,7 @@ container.New = function(base)
 	function class.tile.right.Handle(packet)
 		if usesHMaps then return end
 		local tr = class.tile.right
-		local wx = (packet:GetTileX() * 16 ) - class.C.WIDTH  
+		local wx = (packet:GetTileX() * 16 ) - class.C.WIDTH
 		local newPosition = CPP.Vec2(wx,0)
 		if tr.callback ~= nil then
 			tr.callback(packet, newPosition)
@@ -240,11 +246,15 @@ container.New = function(base)
 		ct.previous.upTouch = ct.upTouch
 		ct.previous.leftTouch = ct.leftTouch
 		ct.previous.rightTouch = ct.rightTouch
+		ct.previous.groundTouchLeft	= ct.groundTouchLeft
+		ct.previous.groundTouchRight	= ct.groundTouchRight
 
 		ct.groundTouch = false
 		ct.upTouch = false
 		ct.leftTouch = false
 		ct.rightTouch = false
+		ct.groundTouchLeft	= false
+		ct.groundTouchRight	= false
 	end
 
 	function class.tile.Deactivate()
