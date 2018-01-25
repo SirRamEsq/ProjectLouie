@@ -45,7 +45,7 @@ function BaseEntity.new(ignoringThis)
 		local c = CPP.interface
 		if attack == base.C.ATTACK.SPIN then
 			c:GetCollisionComponent(EID):DeactivateAll()
-			local xspd = 10 * utility.RandomDirection()
+			local xspd = 12 * utility.RandomDirection()
 			local yspd = math.random() * 2
 			c:GetPositionComponent(EID):SetMovement(CPP.Vec2(xspd, yspd))
 			local timer = 60
