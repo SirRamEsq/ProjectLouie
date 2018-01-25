@@ -30,6 +30,14 @@ function f.InvertHeightMap(hm)
 	return 16-hm;
 end
 
+function f.RandomDirection()
+	if math.random() > 0.5 then
+		return 1
+	else
+		return -1
+	end
+end
+
 function f.TableEmpty(t)
 	if next(t) == nil then return true end
 	return false

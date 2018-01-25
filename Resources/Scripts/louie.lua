@@ -34,6 +34,7 @@ function container.NewLouie(baseclass)
 		louie.c.K_LEFT = "left"
 		louie.c.K_RIGHT = "right"
 		louie.c.K_ACTIVATE = "activate"
+		louie.c.K_ATTACK = "attack"
 
 		louie.c.TILE_WIDTH=16
 		louie.c.TILE_HEIGHT=16
@@ -61,9 +62,15 @@ function container.NewLouie(baseclass)
 		louie.c.ACCELERATION_TOP=4 --Max Speed Louie can acheive through normal acceleration
 		louie.c.ROLL_SPEED= louie.c.ACCELERATION_TOP+1
 		louie.c.ROLL_TIMER=15
-		louie.c.ROLL_COOLDOWN=20
+		louie.c.ROLL_COOLDOWN=30
 		louie.c.MIN_ROLL_SPEED=3
-		louie.roll_timer=0
+		louie.rollTimer=0
+		louie.spinTimer=0
+		louie.c.SPIN_COOLDOWN=80
+		--The value spinTimer must be less than in order to exit the spin
+		louie.spinTimerExitSpin=40
+		--shorter spin in air
+		louie.spinTimerExitSpinAir=60
 
 		louie.c.FRICTION_AIR=.1
 		louie.c.FRICTION_MODIFER=0.46875*2 --The friction of a tile is multiplied by this constant to get the actual friction value
@@ -77,10 +84,9 @@ function container.NewLouie(baseclass)
 
 		louie.c.STATE_NORMAL	= 0
 		louie.c.STATE_ROLL		= 1
-		louie.c.STATE_GRABLEDGE	= 2
 		louie.c.STATE_WALLSLIDE	= 3
 		louie.c.STATE_CLIMB		= 4
-		louie.c.STATE_GRAB		= 5
+		louie.c.STATE_SPIN		= 5
 
 		louie.c.FACING_LEFT=-1
 		louie.c.FACING_RIGHT=1
@@ -197,12 +203,14 @@ function container.NewLouie(baseclass)
 		CPP.interface:ListenForInput(EID, louie.c.K_LEFT)
 		CPP.interface:ListenForInput(EID, louie.c.K_RIGHT)
 		CPP.interface:ListenForInput(EID, louie.c.K_ACTIVATE)
+		CPP.interface:ListenForInput(EID, louie.c.K_ATTACK)
 		CPP.interface:ListenForInput(EID, "cheat")
 		louie.input.RegisterKey( louie.c.K_UP   )
 		louie.input.RegisterKey( louie.c.K_DOWN )
 		louie.input.RegisterKey( louie.c.K_LEFT )
 		louie.input.RegisterKey( louie.c.K_RIGHT)
 		louie.input.RegisterKey( louie.c.K_ACTIVATE)
+		louie.input.RegisterKey( louie.c.K_ATTACK)
 
 		louie.CompCollision = CPP.interface:GetCollisionComponent(EID)
 		louie.CompScript    = CPP.interface:GetScriptComponent(EID)
@@ -376,6 +384,17 @@ function container.NewLouie(baseclass)
 		louie.PrepareForNextFrame()
 	end
 
+	function louie.AnimateSpin()
+		louie.currentSpriteRoll:Render(false)
+		louie.currentSprite:Render    (true)
+		if louie.tile.groundTouch then
+			louie.currentSprite:SetAnimation("Spin")
+			louie.currentSprite:SetAnimationSpeed(1)
+		else
+			louie.currentSprite:SetAnimation("AirSpin")
+			louie.currentSprite:SetAnimationSpeed(1)
+		end
+	end
 
 	function louie.AnimateNormal()
 		louie.currentSpriteRoll:Render(false)
@@ -488,6 +507,9 @@ function container.NewLouie(baseclass)
 
 		elseif(louie.currentState == louie.c.STATE_CLIMB)then
 			louie.AnimateClimb()
+
+		elseif(louie.currentState == louie.c.STATE_SPIN)then
+			louie.AnimateSpin()
 
 		else
 			louie.AnimateOther()
@@ -662,8 +684,24 @@ function container.NewLouie(baseclass)
 				louie.lockTimer=-1
 			end
 		end
-		if(louie.roll_timer>0)then
-			louie.roll_timer = louie.roll_timer - 1
+		if(louie.rollTimer>0)then
+			louie.rollTimer = louie.rollTimer - 1
+		end
+		if(louie.spinTimer>0)then
+			if louie.tile.groundTouch then
+				if louie.spinTimer <= louie.spinTimerExitSpin then
+					if louie.currentState == louie.c.STATE_SPIN then
+						louie.ChangeState(louie.c.STATE_NORMAL)
+					end
+				end
+			else
+				if louie.spinTimer <= louie.spinTimerExitSpinAir then
+					if louie.currentState == louie.c.STATE_SPIN then
+						louie.ChangeState(louie.c.STATE_NORMAL)
+					end
+				end
+			end
+			louie.spinTimer = louie.spinTimer - 1
 		end
 	end
 
@@ -748,6 +786,8 @@ function container.NewLouie(baseclass)
 			if(louie.yspd<0)then
 				louie.yspd=0
 			end
+		elseif(newState==louie.c.STATE_ATTACK) then
+			--do nothing i Guess
 		elseif(newState==louie.c.STATE_CLIMB) then
 			louie.xspd=0
 			louie.yspd=0
@@ -900,9 +940,9 @@ function container.NewLouie(baseclass)
 
 		--Down Pressed
 		if ( (louie.input.key[louie.c.K_DOWN]) and (not louie.inputLock) ) then
-			if((louie.currentState==louie.c.STATE_NORMAL)and(louie.tile.groundTouch==true)and(louie.roll_timer==0))then
+			if((louie.currentState==louie.c.STATE_NORMAL)and(louie.tile.groundTouch==true)and(louie.rollTimer==0))then
 				louie.ChangeState(louie.c.STATE_ROLL)
-				louie.roll_timer = louie.c.ROLL_COOLDOWN
+				louie.rollTimer = louie.c.ROLL_COOLDOWN
 			elseif(louie.currentState==louie.c.STATE_CLIMB)then
 				louie.yspd = louie.climb.SPEED
 			end
@@ -911,6 +951,15 @@ function container.NewLouie(baseclass)
 		if ( (louie.input.keyRelease[louie.c.K_DOWN]) ) then
 			if(louie.currentState == louie.c.STATE_CLIMB) then
 				louie.yspd = 0
+			end
+		end
+
+		-----------------------------------------------------------------------
+		--Attack Pressed
+		if ( (louie.input.key[louie.c.K_ATTACK]) and (not louie.inputLock) ) then
+			if((louie.currentState~=louie.c.STATE_ROLL)and(louie.currentState ~= louie.c.STATE_CLIMB) and (louie.spinTimer == 0) )then
+				louie.ChangeState(louie.c.STATE_SPIN)
+				louie.spinTimer = louie.c.SPIN_COOLDOWN
 			end
 		end
 	end
@@ -1067,6 +1116,10 @@ function container.NewLouie(baseclass)
 				end
 			end
 		end
+
+		if louie.currentState == louie.c.STATE_SPIN then
+			otherEntity.Attack(louie.C.ATTACK.SPIN)
+		end
 	end
 
 	function louie.GetHat()
@@ -1222,12 +1275,16 @@ function container.NewLouie(baseclass)
 	end
 
 	function louie.Attacked(damage)
-		if(louie.currentState ~= louie.c.STATE_ROLL)then--if not rolling
-			louie.TakeDamage(damage)
-			return true --was hit
+		if louie.currentState == louie.c.STATE_ROLL then--if not rolling
+			return false -- not hit
+		elseif louie.currentState == louie.c.STATE_SPIN then
+			if damage <= 1 then
+				return false
+			end
 		end
 
-		return false --not hit
+		louie.TakeDamage(damage)
+		return true --was hit
 	end
 
 	louie.EntityInterface = louie.EntityInterface or {}

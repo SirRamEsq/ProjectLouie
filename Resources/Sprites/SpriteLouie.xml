@@ -39,4 +39,11 @@
 		<image x="36"  y="96" w="18" h="32"/>
 		<image x="54"  y="96" w="18" h="32"/>
 	</animation>
+
+	<animation name="AirSpin" speed="1.0">
+		<image x="0"  y="96" w="18" h="32"/>
+		<image x="18"  y="96" w="18" h="32"/>
+		<image x="36"  y="96" w="18" h="32"/>
+		<image x="54"  y="96" w="18" h="32"/>
+	</animation>
 </sprite>
